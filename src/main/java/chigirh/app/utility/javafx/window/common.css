@@ -1,0 +1,100 @@
+.root{
+
+	-fx-font-size:12.0px;
+
+	-fx-color-base-bg:#3d3d3d;
+	-fx-cloor-base-fg:#eaeaea;
+
+	-fx-color-tf-bg:#1f1f1f;
+	-fx-cloor-tf-fg:#eaeaea;
+
+	-fx-color-tf-edit-bg:#eaeaea;
+	-fx-color-tf-edit-fg:#1f1f1f;
+
+	-fx-color-bt-bg:#313131;
+	-fx-color-bt-fg:#eaeaea;
+	-fx-color-bt-dark:#2d2d2d;
+	-fx-color-bt-right:#828282;
+
+	-fx-color-table-bg:#272727;
+	-fx-color-table-fg:#eaeaea;
+	-fx-color-table-dark:#070707;
+	-fx-color-table-right:#828282;
+
+	-fx-color-error-bg:#fff352;
+	-fx-color-error-fg:#ff0000;
+	-fx-color-error-dark:#333110;
+	-fx-color-error-right:#fffccc ;
+
+
+	-fx-background-color:-fx-color-base-bg;
+}
+
+.text{
+	-fx-fill:-fx-cloor-base-fg;
+}
+
+.content,
+.viewport,
+.tab-pane,
+.tab{
+	-fx-background-color:-fx-color-base-bg;
+}
+
+.normar-window .text-field{
+	-fx-background-color:-fx-color-tf-bg;
+	-fx-text-fill:-fx-cloor-tf-fg
+}
+
+.normar-window .button{
+	-fx-background-color:-fx-color-tf-bg;
+	-fx-text-fill:-fx-cloor-tf-fg
+}
+
+.table{
+	-fx-background-color:-fx-color-table-bg;
+}
+
+.utl-table-row{
+	-fx-pref-height: 16.0px;
+}
+
+.utl-table-cell{
+	-fx-pref-height: 16.0px;
+}
+
+.utl-table-cell .text-field,
+.utl-table-cell .check-box-table-cell,
+.utl-table-cell .check-box{
+	-fx-pref-height: 25.0px;
+	-fx-background-radius: 0.0px;
+	-fx-background-color:-fx-color-table-bg;
+	-fx-text-fill:-fx-color-table-fg;
+	-fx-border-color: -fx-color-table-right -fx-color-table-dark -fx-color-table-dark -fx-color-table-right;
+}
+
+.utl-table-cell:error .text-field,
+.utl-table-cell:error .check-box-table-cell,
+.utl-table-cell:error .check-box{
+	-fx-background-color:-fx-color-error-bg;
+	-fx-text-fill:-fx-color-error-fg;
+	-fx-border-color: -fx-color-error-right -fx-color-error-dark -fx-color-error-dark -fx-color-error-right;
+}
+
+.utl-table-cell .text-field:focused{
+	-fx-background-color:-fx-color-tf-edit-bg;
+	-fx-text-fill:-fx-color-tf-edit-fg
+}
+
+.utl-table-icon{
+	-fx-shape: "M 0 -3.5 L 4 0 L 0 3.5 z";
+}
+
+.button{
+	-fx-background-radius: 0.0px;
+	-fx-background-color:-fx-color-bt-bg;
+	-fx-text-fill:-fx-color-bt-fg;
+	-fx-border-color: -fx-color-bt-right -fx-color-bt-dark -fx-color-bt-dark -fx-color-bt-right;
+}
+
+
