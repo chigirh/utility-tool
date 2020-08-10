@@ -56,7 +56,7 @@ public class ActualWorkTableRow extends TableRow<ActualWorkTableRowObject> {
 	}
 
 	private TextTableCell icon() {
-		TextTableCell icon = new TextTableCell("→");
+		TextTableCell icon = new TextTableCell("▼");
 		icon.setWidth(ICON_WIDTH);
 		icon.addEvenet(MouseEvent.MOUSE_CLICKED, e -> iconClickHandler(e, icon));
 		return icon;
@@ -72,7 +72,7 @@ public class ActualWorkTableRow extends TableRow<ActualWorkTableRowObject> {
 		tableRowObject.getChildren().forEach(e -> e.setVisible(!tableRowObject.isExpanted()));
 		tableRowObject.setExpanted(!tableRowObject.isExpanted());
 
-		icon.getCell().setText(tableRowObject.isExpanted() ? "↓" : "→");
+		icon.getCell().setText(tableRowObject.isExpanted() ? "▽" : "▼");
 
 		callBack.run();
 	}

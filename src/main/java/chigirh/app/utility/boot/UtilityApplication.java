@@ -12,7 +12,7 @@ import chigirh.app.utility.javafx.window.WindowFactory;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-@SpringBootApplication(scanBasePackages = "chigirh.app.utility")
+@SpringBootApplication(scanBasePackageClasses = chigirh.app.utility.ComponentScanaBasePackage.class)
 @EntityScan("chigirh.app.utility.app.domain")
 @EnableJpaRepositories("chigirh.app.utility.app.mapper")
 public class UtilityApplication extends Application {

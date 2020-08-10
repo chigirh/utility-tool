@@ -4,6 +4,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,7 @@ import chigirh.app.utility.app.domain.actualwork.ActualWorkEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkGroupEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkService;
 import chigirh.app.utility.common.prop.FxmlProperties;
+import chigirh.app.utility.javafx.component.PseudoClassConstans;
 import chigirh.app.utility.javafx.presenter.PresenterBase;
 import chigirh.app.utility.javafx.util.JavaFxTextFieldUtils;
 import chigirh.app.utility.javafx.window.ContentViewAndPresenter;
@@ -77,7 +79,9 @@ public class ActualWorkPresenter extends PresenterBase {
 	@FXML
 	public void onAwAdd(ActionEvent e) throws ParseException{
 
+
 		if(!JavaFxTextFieldUtils.inputCheck(awAddTf, AW_DATE_PAT)) {
+			awAddTf.pseudoClassStateChanged(PseudoClassConstans.ERROR, !StringUtils.isEmpty(awAddTf.getText()));
 			return;
 		}
 
@@ -85,6 +89,7 @@ public class ActualWorkPresenter extends PresenterBase {
 		if(entity == null) {
 			return;
 		}
+		awAddTf.pseudoClassStateChanged(PseudoClassConstans.ERROR, false);
 		awAddTf.setText("");
 
 		actualWorkTablePresenter.update();

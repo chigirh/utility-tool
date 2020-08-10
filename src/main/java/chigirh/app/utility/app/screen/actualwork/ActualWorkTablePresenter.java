@@ -122,7 +122,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		parentCol1.setOrder(1);
 		parentCol1.setColumnName("");
 		parentCol1.setEditable(false);
-		parentCol1.setWidth(30);
+		parentCol1.setWidth(20);
 		parentCol1.setCellFactory(e -> false);
 		parentCol1.setPropertyFactory(ActualWorkRow::isDeleteCheckedProperty);
 		parentCol1.setValueSetter(ActualWorkRow::setIsDeleteChecked);
@@ -154,7 +154,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		childCol1.setOrder(1);
 		childCol1.setColumnName("");
 		childCol1.setEditable(true);
-		childCol1.setWidth(30);
+		childCol1.setWidth(20);
 		childCol1.setCellFactory(e -> false);
 		childCol1.setPropertyFactory(ActualWorkTaskRow::isDeleteCheckedProperty);
 		childCol1.setValueSetter(ActualWorkTaskRow::setIsDeleteChecked);
@@ -163,8 +163,8 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		childCol2.setOrder(2);
 		childCol2.setColumnName("分類1");
 		childCol2.setEditable(false);
-		childCol2.setWidth(50);
-		childCol2.setCellFactory(e -> "分類2");
+		childCol2.setWidth(65);
+		childCol2.setCellFactory(e -> "");
 		childCol2.setPropertyFactory(ActualWorkTaskRow::classification1Property);
 		childCol2.setValueSetter(ActualWorkTaskRow::setClassification1);
 
@@ -172,8 +172,8 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		childCol3.setOrder(3);
 		childCol3.setColumnName("分類2");
 		childCol3.setEditable(false);
-		childCol3.setWidth(50);
-		childCol3.setCellFactory(e -> "分類2");
+		childCol3.setWidth(65);
+		childCol3.setCellFactory(e -> "");
 		childCol3.setPropertyFactory(ActualWorkTaskRow::classification2Property);
 		childCol3.setValueSetter(ActualWorkTaskRow::setClassification2);
 
@@ -196,7 +196,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		childCol5.setValueSetter(ActualWorkTaskRow::setTaskTime);
 		childCol5.setValidator(e -> JavaFxTextFieldUtils.inputCheck(e, AW_TIME_PAT));
 
-		awTaskColumns = Arrays.asList(childCol1, /*childCol2, childCol3, */childCol4, childCol5);
+		awTaskColumns = Arrays.asList(childCol1, childCol2, childCol3, childCol4, childCol5);
 	}
 
 	private String longToDate(Long longDate) {
@@ -228,16 +228,16 @@ public class ActualWorkTablePresenter extends PresenterBase {
 	public void delete() {
 
 		awRowMap.values().stream()//
-		.filter(this::judgeAndDelete)//
-		.flatMap(e -> e.getAwTasks().stream())//
-		.filter(ActualWorkTaskRow::getIsDeleteChecked)//
-		.forEach(e -> actualWorkService.awTaslDelete(e.getActualWorkId(), Integer.parseInt(e.getSerial())));
+				.filter(this::judgeAndDelete)//
+				.flatMap(e -> e.getAwTasks().stream())//
+				.filter(ActualWorkTaskRow::getIsDeleteChecked)//
+				.forEach(e -> actualWorkService.awTaslDelete(e.getActualWorkId(), Integer.parseInt(e.getSerial())));
 
 		update();
 	}
 
 	private boolean judgeAndDelete(ActualWorkRow row) {
-		if(row.getIsDeleteChecked()) {
+		if (row.getIsDeleteChecked()) {
 			actualWorkService.awDelete(row.getActualWorkId());
 			return false;
 		}
@@ -245,6 +245,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 	}
 
 	public void redraw() {
+		tableRows.forEach(ActualWorkTableRow::clear);
 		if (head == null) {
 			return;
 		}
@@ -262,9 +263,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 				}
 				sequence.setDisplay(false);
 				sequence = sequence.next();
-			}
-			if (sequence == null) {
-				tableRow.clear();
+
 			}
 
 		}
@@ -300,7 +299,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		row.getChildren()
 				.addAll(awColumns.stream().map(e -> createTableCell(e, entity, vm)).collect(Collectors.toList()));
 
-		parent.setAddTask(()-> addTask(parent,vm));
+		parent.setAddTask(() -> addTask(parent, vm));
 
 		return row;
 	}
@@ -359,7 +358,6 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		return tableRowObject;
 	}
 
-
 	public HBox createChildRow(ActualWorkTaskEntity entity, ActualWorkTaskRow vm) {
 		HBox row = new HBox();
 		row.getChildren()
@@ -377,6 +375,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 	}
 
 	private void awTaskUpdate(ActualWorkTaskEntity entity, ActualWorkTaskRow vm) {
+
 		actualWorkService.awTaskUpdate(entity, vm.getTaskName(), vm.getTaskTime());
 
 		final String awId = vm.getActualWorkId();
@@ -386,13 +385,15 @@ public class ActualWorkTablePresenter extends PresenterBase {
 
 	}
 
-
-
 	/*
 	 * スクロール処理ここから
 	 */
 
 	private void onScroll(ScrollEvent e) {
+
+		if(head == null) {
+			return;
+		}
 
 		double deltaY = e.getDeltaY();
 

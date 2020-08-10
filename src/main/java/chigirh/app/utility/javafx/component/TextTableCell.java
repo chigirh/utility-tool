@@ -2,6 +2,7 @@ package chigirh.app.utility.javafx.component;
 
 import java.util.function.Predicate;
 
+import chigirh.app.utility.javafx.component.actualwork.UtlTextField;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -22,7 +23,7 @@ public class TextTableCell extends TableCell<TextField, StringProperty> {
 
 	public TextTableCell(String text, boolean isEditable) {
 		super();
-		setCell(new TextField());
+		setCell(new UtlTextField());
 		getCell().setText(text);
 		getCell().setEditable(isEditable);
 

@@ -95,6 +95,11 @@ public class ActualWorkService {
 	}
 
 	@Transactional
+	public void awGroupDelete(final String awGroupId) {
+		actualWorkGroupMapper.deleteById(awGroupId);
+	}
+
+	@Transactional
 	public void awDelete(final String awId) {
 		actualWorkMapper.deleteById(awId);
 	}

@@ -1,7 +1,6 @@
 package chigirh.app.utility.javafx.component;
 
 import javafx.beans.property.ReadOnlyProperty;
-import javafx.css.PseudoClass;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -12,8 +11,6 @@ import lombok.Getter;
 public abstract class TableCell<E extends Control, P extends ReadOnlyProperty<?>> extends AnchorPane {
 
 	private static final String STYLE_CLASS = "utl-table-cell";
-
-	private static final PseudoClass EROOR = PseudoClass.getPseudoClass("error");
 
 	@Getter
 	protected E cell;
@@ -28,7 +25,7 @@ public abstract class TableCell<E extends Control, P extends ReadOnlyProperty<?>
 	}
 
 	protected void setError(boolean isError) {
-		pseudoClassStateChanged(EROOR, isError);
+		pseudoClassStateChanged(PseudoClassConstans.ERROR, isError);
 	}
 
 	public abstract void change(Runnable task);
