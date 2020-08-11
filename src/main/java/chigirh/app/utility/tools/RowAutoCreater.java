@@ -18,6 +18,8 @@ public class RowAutoCreater {
 //		actualWorkRow();
 //		actualWorkTaskRow();
 
+//		taskRow();
+
 	}
 
 	private static void actualWorkRow() {
@@ -47,6 +49,24 @@ public class RowAutoCreater {
 				.col(Col.builder().name("classification2").type("String").build())//
 				.col(Col.builder().name("taskName").type("String").build())//
 				.col(Col.builder().name("taskTime").type("String").build())//
+				.col(Col.builder().name("isDeleteChecked").type("Boolean").build())//
+				.build();
+
+		create(def);
+	}
+
+	private static void taskRow() {
+		Def def = Def.builder()//
+				.packageName("chigirh.app.utility.app.screen.taskmgr")//
+				.rowName("Task")
+				.pass("src/main/java/chigirh/app/utility/app/screen/taskmgr")//
+				.keyType("String")//
+				.key(Col.builder().name("taskId").type("String").build())//
+				.col(Col.builder().name("taskName").type("String").build())//
+				.col(Col.builder().name("statusId").type("String").build())//
+				.col(Col.builder().name("limitDate").type("String").build())//
+				.col(Col.builder().name("startDate").type("String").build())//
+				.col(Col.builder().name("updateDate").type("String").build())//
 				.col(Col.builder().name("isDeleteChecked").type("Boolean").build())//
 				.build();
 

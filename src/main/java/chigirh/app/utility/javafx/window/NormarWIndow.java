@@ -10,7 +10,7 @@ import javafx.stage.StageStyle;
 public class NormarWIndow extends AbstractWindow{
 
 	public NormarWIndow(final ViewAndPresenter viewAndPresenter,Object windowParam) {
-		super(viewAndPresenter,windowParam,StageStyle.UTILITY);
+		super(viewAndPresenter,windowParam,StageStyle.DECORATED);
 	}
 
 

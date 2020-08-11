@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import chigirh.app.utility.app.domain.taskmgr.TaskStatusEntity;
+import chigirh.app.utility.app.mapper.taskmgr.TaskStatusMapper;
 import chigirh.app.utility.dbinit.CreateTableSQL.Col;
 import chigirh.app.utility.dbinit.CreateTableSQL.Fk;
 
@@ -16,6 +18,8 @@ public class DataBaseItializer {
 	@Autowired
 	SqlIssuer issuer;
 
+	@Autowired
+	TaskStatusMapper taskStatusMapper;
 
 	public void init() {
 
@@ -23,6 +27,7 @@ public class DataBaseItializer {
 
 		master();
 		transaction();
+
 	}
 
 	private void master() {
@@ -62,6 +67,17 @@ public class DataBaseItializer {
 
 		LOGGER.info("table name {}", actualWorkClassificationJunction.getTableName());
 		isCreate = issuer.createTable(actualWorkClassificationJunction);
+		LOGGER.info("result : {}", isCreate ? "SUCCESS!!" : "EXEITS");
+
+		CreateTableSQL taskStatus = CreateTableSQL.CREATE_TABLE()
+				.tableName("m_task_status")//
+				.column(Col.builder().index(1).name("status_id").type(String.class).isPk(true).build())//
+				.column(Col.builder().index(2).name("status").type(String.class).isNotNull(true).build())//
+				.column(Col.builder().index(3).name("remark").type(String.class).build())//
+				.build();
+
+		LOGGER.info("table name {}", taskStatus.getTableName());
+		isCreate = issuer.createTable(taskStatus);
 		LOGGER.info("result : {}", isCreate ? "SUCCESS!!" : "EXEITS");
 
 		LOGGER.info("Master table Initialize end ...");
@@ -113,6 +129,47 @@ public class DataBaseItializer {
 		LOGGER.info("table name {}", actualWorkTask.getTableName());
 		isCreate = issuer.createTable(actualWorkTask);
 		LOGGER.info("result:{}", isCreate ? "SUCCESS!!" : "EXEITS");
+
+		CreateTableSQL task = CreateTableSQL.CREATE_TABLE().tableName("t_task")//
+				.column(Col.builder().index(1).name("task_id").type(String.class).isPk(true).build())//
+				.column(Col.builder().index(2).name("task_name").type(String.class).build())//
+				.column(Col.builder().index(3).name("start_date").type(Integer.class).isNotNull(true).build())//
+				.column(Col.builder().index(4).name("update_date").type(Integer.class).isNotNull(true).build())//
+				.column(Col.builder().index(5).name("limit_date").type(Integer.class).build())//
+				.column(Col.builder().index(6).name("status_id").type(String.class).isNotNull(true).build())//
+				.column(Col.builder().index(7).name("remark").type(String.class).build())//
+				.fk(Fk.builder().col("status_id").refTab("m_task_status").refCol("status_id")
+						.build())//
+				.build();
+		LOGGER.info("table name {}", task.getTableName());
+		isCreate = issuer.createTable(task);
+		LOGGER.info("result:{}", isCreate ? "SUCCESS!!" : "EXEITS");
+
+
+			TaskStatusEntity taskStatusEntity = new TaskStatusEntity();
+			taskStatusEntity.setStatusId("0");
+			taskStatusEntity.setStatus("未着手");
+			taskStatusMapper.saveAndFlush(taskStatusEntity);
+
+			taskStatusEntity.setStatusId("1");
+			taskStatusEntity.setStatus("着手中");
+			taskStatusMapper.saveAndFlush(taskStatusEntity);
+
+			taskStatusEntity.setStatusId("2");
+			taskStatusEntity.setStatus("Rv中");
+			taskStatusMapper.saveAndFlush(taskStatusEntity);
+
+			taskStatusEntity.setStatusId("3");
+			taskStatusEntity.setStatus("完了");
+			taskStatusMapper.saveAndFlush(taskStatusEntity);
+
+			taskStatusEntity.setStatusId("4");
+			taskStatusEntity.setStatus("保留");
+			taskStatusMapper.saveAndFlush(taskStatusEntity);
+
+			taskStatusEntity.setStatusId("5");
+			taskStatusEntity.setStatus("欠番");
+			taskStatusMapper.saveAndFlush(taskStatusEntity);
 
 		LOGGER.info("Transaction table Initialize end ...");
 
