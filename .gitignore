@@ -36,3 +36,5 @@ out/
 
 ###
 lib/db/sqlite3/database.sqlite3
+
+bin/
