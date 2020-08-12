@@ -4,7 +4,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.ResourceBundle;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -14,13 +13,13 @@ import chigirh.app.utility.app.domain.actualwork.ActualWorkGroupEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkService;
 import chigirh.app.utility.common.prop.FxmlProperties;
 import chigirh.app.utility.javafx.component.PseudoClassConstans;
+import chigirh.app.utility.javafx.component.UtlTextField;
 import chigirh.app.utility.javafx.presenter.PresenterBase;
 import chigirh.app.utility.javafx.util.JavaFxTextFieldUtils;
 import chigirh.app.utility.javafx.window.ContentViewAndPresenter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +34,7 @@ public class ActualWorkPresenter extends PresenterBase {
 	private AnchorPane tableArea;
 
 	@FXML
-	private TextField awAddTf;
+	private UtlTextField awAddTf;
 
 	@FXML
 	private Button awAddBt;
@@ -54,6 +53,8 @@ public class ActualWorkPresenter extends PresenterBase {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+
+		awAddTf.setValidator(AW_DATE_PAT);
 
 		String tableFxml = fxmlProperties.getActualWorkTable();
 
@@ -81,7 +82,6 @@ public class ActualWorkPresenter extends PresenterBase {
 
 
 		if(!JavaFxTextFieldUtils.inputCheck(awAddTf, AW_DATE_PAT)) {
-			awAddTf.pseudoClassStateChanged(PseudoClassConstans.ERROR, !StringUtils.isEmpty(awAddTf.getText()));
 			return;
 		}
 

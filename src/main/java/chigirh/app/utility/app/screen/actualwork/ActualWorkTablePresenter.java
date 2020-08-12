@@ -22,14 +22,13 @@ import chigirh.app.utility.app.domain.actualwork.ActualWorkGroupEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkService;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkTaskEntity;
 import chigirh.app.utility.javafx.component.CheckTableColumn;
-import chigirh.app.utility.javafx.component.TableCell;
 import chigirh.app.utility.javafx.component.TableColumn;
 import chigirh.app.utility.javafx.component.TableRow.RowType;
 import chigirh.app.utility.javafx.component.TextTableColumn;
+import chigirh.app.utility.javafx.component.UtlTableCell;
 import chigirh.app.utility.javafx.component.actualwork.ActualWorkTableRow;
 import chigirh.app.utility.javafx.component.actualwork.ActualWorkTableRowObject;
 import chigirh.app.utility.javafx.presenter.PresenterBase;
-import chigirh.app.utility.javafx.util.JavaFxTextFieldUtils;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -64,9 +63,9 @@ public class ActualWorkTablePresenter extends PresenterBase {
 
 	private ActualWorkGroupEntity windowParam = null;
 
-	private List<TableColumn<ActualWorkEntity, ActualWorkRow, ?, ?>> awColumns;
+	private List<TableColumn<ActualWorkRow, ?, ?>> awColumns;
 
-	private List<TableColumn<ActualWorkTaskEntity, ActualWorkTaskRow, ?, ?>> awTaskColumns;
+	private List<TableColumn<ActualWorkTaskRow, ?, ?>> awTaskColumns;
 
 	private final List<ActualWorkTableRow> tableRows = new ArrayList<>();
 
@@ -91,6 +90,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		table.getStyleClass().add(STYLE_CLASS);
 	}
 
+	@Override
 	public void setPatameter(Object windowParam) {
 		if (windowParam instanceof ActualWorkGroupEntity) {
 			this.windowParam = (ActualWorkGroupEntity) windowParam;
@@ -118,83 +118,65 @@ public class ActualWorkTablePresenter extends PresenterBase {
 	}
 
 	private void clumnDefinition() {
-		CheckTableColumn<ActualWorkEntity, ActualWorkRow> parentCol1 = new CheckTableColumn<>();
+		CheckTableColumn<ActualWorkRow> parentCol1 = new CheckTableColumn<>();
 		parentCol1.setOrder(1);
 		parentCol1.setColumnName("");
 		parentCol1.setEditable(false);
 		parentCol1.setWidth(20);
-		parentCol1.setCellFactory(e -> false);
 		parentCol1.setPropertyFactory(ActualWorkRow::isDeleteCheckedProperty);
-		parentCol1.setValueSetter(ActualWorkRow::setIsDeleteChecked);
 
-		TextTableColumn<ActualWorkEntity, ActualWorkRow> parentCol2 = new TextTableColumn<>();
+		TextTableColumn<ActualWorkRow> parentCol2 = new TextTableColumn<>();
 		parentCol2.setOrder(2);
 		parentCol2.setColumnName("");
 		parentCol2.setEditable(true);
 		parentCol2.setWidth(300);
-		parentCol2.setCellFactory(e -> longToDate(e.getAwDate()));
 		parentCol2.setPropertyFactory(ActualWorkRow::actualWorkDateProperty);
-		parentCol2.setValueSetter(ActualWorkRow::setActualWorkDate);
-		parentCol2.setValidator(e -> JavaFxTextFieldUtils.inputCheck(e, AW_DATE_PAT));
+		parentCol2.setValidator(AW_DATE_PAT);
 
-		TextTableColumn<ActualWorkEntity, ActualWorkRow> parentCol3 = new TextTableColumn<>();
+		TextTableColumn<ActualWorkRow> parentCol3 = new TextTableColumn<>();
 		parentCol3.setOrder(3);
 		parentCol3.setColumnName("");
 		parentCol3.setEditable(false);
 		parentCol3.setWidth(50);
-		parentCol3.setCellFactory(e -> String
-				.valueOf(actualWorkService.awTaskGet(e.getAwId()).stream()
-						.mapToDouble(ActualWorkTaskEntity::getTaskTime).sum()));
 		parentCol3.setPropertyFactory(ActualWorkRow::actualWorkTimeProperty);
-		parentCol3.setValueSetter(ActualWorkRow::setActualWorkTime);
 
 		awColumns = Arrays.asList(parentCol1, parentCol2, parentCol3);
 
-		CheckTableColumn<ActualWorkTaskEntity, ActualWorkTaskRow> childCol1 = new CheckTableColumn<>();
+		CheckTableColumn<ActualWorkTaskRow> childCol1 = new CheckTableColumn<>();
 		childCol1.setOrder(1);
 		childCol1.setColumnName("");
 		childCol1.setEditable(true);
 		childCol1.setWidth(20);
-		childCol1.setCellFactory(e -> false);
 		childCol1.setPropertyFactory(ActualWorkTaskRow::isDeleteCheckedProperty);
-		childCol1.setValueSetter(ActualWorkTaskRow::setIsDeleteChecked);
 
-		TextTableColumn<ActualWorkTaskEntity, ActualWorkTaskRow> childCol2 = new TextTableColumn<>();
+		TextTableColumn<ActualWorkTaskRow> childCol2 = new TextTableColumn<>();
 		childCol2.setOrder(2);
 		childCol2.setColumnName("分類1");
 		childCol2.setEditable(false);
 		childCol2.setWidth(65);
-		childCol2.setCellFactory(e -> "");
 		childCol2.setPropertyFactory(ActualWorkTaskRow::classification1Property);
-		childCol2.setValueSetter(ActualWorkTaskRow::setClassification1);
 
-		TextTableColumn<ActualWorkTaskEntity, ActualWorkTaskRow> childCol3 = new TextTableColumn<>();
+		TextTableColumn<ActualWorkTaskRow> childCol3 = new TextTableColumn<>();
 		childCol3.setOrder(3);
 		childCol3.setColumnName("分類2");
 		childCol3.setEditable(false);
 		childCol3.setWidth(65);
-		childCol3.setCellFactory(e -> "");
 		childCol3.setPropertyFactory(ActualWorkTaskRow::classification2Property);
-		childCol3.setValueSetter(ActualWorkTaskRow::setClassification2);
 
-		TextTableColumn<ActualWorkTaskEntity, ActualWorkTaskRow> childCol4 = new TextTableColumn<>();
+		TextTableColumn<ActualWorkTaskRow> childCol4 = new TextTableColumn<>();
 		childCol4.setOrder(4);
 		childCol4.setColumnName("タスク名");
 		childCol4.setEditable(true);
 		childCol4.setWidth(300);
-		childCol4.setCellFactory(ActualWorkTaskEntity::getTaskName);
 		childCol4.setPropertyFactory(ActualWorkTaskRow::taskNameProperty);
-		childCol4.setValueSetter(ActualWorkTaskRow::setTaskName);
 
-		TextTableColumn<ActualWorkTaskEntity, ActualWorkTaskRow> childCol5 = new TextTableColumn<>();
+		TextTableColumn<ActualWorkTaskRow> childCol5 = new TextTableColumn<>();
 		childCol5.setOrder(5);
 		childCol5.setColumnName("時間");
 		childCol5.setEditable(true);
 		childCol5.setWidth(50);
-		childCol5.setCellFactory(e -> String.valueOf(e.getTaskTime()));
 		childCol5.setPropertyFactory(ActualWorkTaskRow::taskTimeProperty);
-		childCol5.setValueSetter(ActualWorkTaskRow::setTaskTime);
-		childCol5.setValidator(e -> JavaFxTextFieldUtils.inputCheck(e, AW_TIME_PAT));
+		childCol5.setValidator(AW_TIME_PAT);
 
 		awTaskColumns = Arrays.asList(childCol1, childCol2, childCol3, childCol4, childCol5);
 	}
@@ -209,7 +191,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		return sdf.format(date);
 	}
 
-	public Node createHeaderCell(TableColumn<ActualWorkTaskEntity, ActualWorkTaskRow, ?, ?> def) {
+	public Node createHeaderCell(TableColumn<ActualWorkTaskRow, ?, ?> def) {
 		Label cell = new Label();
 		cell.setText(def.getColumnName());
 		cell.setPrefWidth(def.getWidth());
@@ -231,7 +213,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 				.filter(this::judgeAndDelete)//
 				.flatMap(e -> e.getAwTasks().stream())//
 				.filter(ActualWorkTaskRow::getIsDeleteChecked)//
-				.forEach(e -> actualWorkService.awTaslDelete(e.getActualWorkId(), Integer.parseInt(e.getSerial())));
+				.forEach(e -> actualWorkService.awTaskDelete(e.getActualWorkId(), Integer.parseInt(e.getSerial())));
 
 		update();
 	}
@@ -273,6 +255,10 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		ActualWorkTableRowObject tableRowObject = new ActualWorkTableRowObject(RowType.PARENT);
 
 		ActualWorkRow vm = new ActualWorkRow(entity.getAwId());
+		vm.setActualWorkDate(longToDate(entity.getAwDate()));
+		vm.setActualWorkTime(String
+				.valueOf(actualWorkService.awTaskGet(entity.getAwId()).stream()
+						.mapToDouble(ActualWorkTaskEntity::getTaskTime).sum()));
 		awRowMap.put(vm.getKey(), vm);
 
 		tableRowObject.setRowFactory(() -> createParentRow(entity, tableRowObject, vm));
@@ -314,9 +300,9 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		redraw();
 	}
 
-	private TableCell<?, ?> createTableCell(TableColumn<ActualWorkEntity, ActualWorkRow, ?, ?> columnDef,
+	private UtlTableCell<?, ?> createTableCell(TableColumn<ActualWorkRow, ?, ?> columnDef,
 			ActualWorkEntity entity, ActualWorkRow vm) {
-		TableCell<?, ?> cell = columnDef.cellCreate(entity, vm);
+		UtlTableCell<?, ?> cell = columnDef.cellCreate(vm);
 
 		cell.change(() -> awUpdate(entity, vm));
 
@@ -335,6 +321,10 @@ public class ActualWorkTablePresenter extends PresenterBase {
 			ActualWorkRow pVm) {
 		ActualWorkTableRowObject tableRowObject = new ActualWorkTableRowObject(RowType.CHILD);
 		ActualWorkTaskRow cVm = new ActualWorkTaskRow(entity.getAwId(), String.valueOf(entity.getSerial()));
+		cVm.setTaskName(entity.getTaskName());
+		cVm.setClassification1("");
+		cVm.setClassification2("");
+		cVm.setTaskTime(String.valueOf(entity.getTaskTime()));
 		awTaskRowMap.put(cVm.getKey(), cVm);
 
 		paret.getChildren().add(tableRowObject);
@@ -365,9 +355,9 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		return row;
 	}
 
-	public TableCell<?, ?> createChildCell(TableColumn<ActualWorkTaskEntity, ActualWorkTaskRow, ?, ?> columnDef,
+	public UtlTableCell<?, ?> createChildCell(TableColumn<ActualWorkTaskRow, ?, ?> columnDef,
 			ActualWorkTaskEntity entity, ActualWorkTaskRow vm) {
-		TableCell<?, ?> cell = columnDef.cellCreate(entity, vm);
+		UtlTableCell<?, ?> cell = columnDef.cellCreate(vm);
 
 		cell.change(() -> awTaskUpdate(entity, vm));
 
@@ -391,7 +381,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 
 	private void onScroll(ScrollEvent e) {
 
-		if(head == null) {
+		if (head == null) {
 			return;
 		}
 

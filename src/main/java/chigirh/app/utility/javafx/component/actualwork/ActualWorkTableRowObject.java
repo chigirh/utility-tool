@@ -18,8 +18,6 @@ public class ActualWorkTableRowObject extends TableRowObject<ActualWorkTableRowO
 
 	private boolean isExpanted = false;
 
-	private boolean isVisible = false;
-
 	private Runnable addTask;
 
 	List<ActualWorkTableRowObject> children = new ArrayList<>();

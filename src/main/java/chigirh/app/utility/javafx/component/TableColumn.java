@@ -1,6 +1,5 @@
 package chigirh.app.utility.javafx.component;
 
-import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import javafx.beans.property.ReadOnlyProperty;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @lombok.Data
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class TableColumn<E,R extends SimpleTableRow<?>, P extends ReadOnlyProperty<?>,T> {
+public abstract class TableColumn<R extends SimpleTableRow<?>, P extends ReadOnlyProperty<?>,T> {
 
 	private String columnName;
 
@@ -20,23 +19,18 @@ public abstract class TableColumn<E,R extends SimpleTableRow<?>, P extends ReadO
 
 	private boolean isEditable;
 
-	private Function<E, T> cellFactory;
-
 	private Function<R, P> propertyFactory;
 
-	private BiConsumer<R,T> valueSetter;
-
-	public TableCell<?,?> cellCreate(E entity,R row) {
-		TableCell<?,?> cell = getCell();
+	public UtlTableCell<?,?> cellCreate(R row) {
+		UtlTableCell<?,?> cell = getCell();
 		P prop = propertyFactory.apply(row);
-		valueSetter.accept(row,cellFactory.apply(entity));
-		binding(cell, prop);
+		binding(cell, prop,row);
 		return cell;
 	}
 
 
-	protected abstract TableCell<?,?> getCell();
+	protected abstract UtlTableCell<?,?> getCell();
 
-	public abstract void binding(TableCell<?,?> cell, P prop);
+	public abstract void binding(UtlTableCell<?,?> cell, P prop,R row);
 
 }

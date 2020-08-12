@@ -14,12 +14,16 @@ public class FxmlProperties {
 
 	private String actualWorkIndex;
 
-	private String taskIndex;
+	private String taskManagerIndex;
 
 	private String shortcutIndex;
 
 	private String actualWork;
 
 	private String actualWorkTable;
+
+	private String taskManager;
+
+	private String taskManagerTable;
 
 }

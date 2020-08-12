@@ -1,17 +1,8 @@
 package chigirh.app.utility.javafx.component;
 
-import java.util.function.Predicate;
-
-import chigirh.app.utility.javafx.component.actualwork.UtlTextField;
 import javafx.beans.property.StringProperty;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import lombok.Setter;
 
-public class TextTableCell extends TableCell<TextField, StringProperty> {
-
-	@Setter
-	private Predicate<TextField> validator = null;
+public class TextTableCell extends UtlTableCell<UtlTextField, StringProperty> {
 
 	public TextTableCell(boolean isEditable) {
 		this("", isEditable);
@@ -36,24 +27,16 @@ public class TextTableCell extends TableCell<TextField, StringProperty> {
 	}
 
 	public void change(Runnable task) {
-		getCell().focusedProperty().addListener((ob, ov, nv) -> {
-			if (!nv)
-				if((validator == null || validator.test(getCell()))) {
-					setError(false);
-				task.run();
-				}else {
-					setError(true);
-				}
-		});
-		getCell().setOnKeyPressed(e -> {
-			if (e.getCode() == KeyCode.ENTER)
-				requestFocus();
-		});
+		getCell().confirmNoticeProperty().addListener((ob,ov,nv) -> task.run());
 	}
 
 	@Override
 	public StringProperty getProperty() {
 		return getCell().textProperty();
+	}
+
+	public void setValidator(String validator) {
+		getCell().setValidator(validator);
 	}
 
 }

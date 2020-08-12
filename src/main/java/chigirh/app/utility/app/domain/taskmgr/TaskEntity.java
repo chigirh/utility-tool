@@ -16,6 +16,9 @@ public class TaskEntity {
 	@Column(name = "task_id")
 	private String taskId;
 
+	@Column(name = "task_group_id")
+	private String taskGroupId;
+
 	@Column(name = "task_name")
 	private String taskName;
 

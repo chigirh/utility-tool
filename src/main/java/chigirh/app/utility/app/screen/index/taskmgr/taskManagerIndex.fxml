@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import chigirh.app.utility.javafx.component.UtlTextField?>
 
-<AnchorPane prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chigirh.app.utility.app.screen.index.actualwork.ActualWorkIndexPresenter">
+<AnchorPane xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chigirh.app.utility.app.screen.index.taskmgr.TaskManagerIndexPresenter">
    <children>
       <AnchorPane layoutX="-0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -16,9 +16,9 @@
                <children>
                   <AnchorPane>
                      <children>
-                        <ScrollPane fx:id="awScroll" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
+                        <ScrollPane fx:id="taskScroll" prefHeight="300.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="8.0" AnchorPane.topAnchor="0.0">
                            <content>
-                              <VBox fx:id="awBox" prefWidth="600.0" />
+                              <VBox fx:id="taskBox" prefWidth="600.0" />
                            </content>
                         </ScrollPane>
                      </children>
@@ -27,9 +27,9 @@
                      <children>
                         <HBox prefHeight="25.0">
                            <children>
-                              <UtlTextField fx:id="awAddTf" prefHeight="23.0" prefWidth="490.0" />
+                              <UtlTextField fx:id="taskAddTf" prefHeight="23.0" prefWidth="490.0" />
                               <AnchorPane prefWidth="10.0" />
-                              <Button fx:id="awAddBt" mnemonicParsing="false" onAction="#onAwAdd" prefHeight="30.0" prefWidth="100.0" text="新規追加" />
+                              <Button fx:id="taskAddBt" mnemonicParsing="false" onAction="#onTaskAdd" prefHeight="30.0" prefWidth="100.0" text="新規追加" />
                            </children>
                         </HBox>
                      </children>

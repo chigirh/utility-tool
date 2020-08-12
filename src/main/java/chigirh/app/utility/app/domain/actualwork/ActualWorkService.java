@@ -97,21 +97,22 @@ public class ActualWorkService {
 	@Transactional
 	public void awGroupDelete(final String awGroupId) {
 		actualWorkGroupMapper.deleteById(awGroupId);
+		awGet(awGroupId).parallelStream().map(ActualWorkEntity::getAwId).forEach(this::awDelete);
 	}
 
 	@Transactional
 	public void awDelete(final String awId) {
 		actualWorkMapper.deleteById(awId);
+		awTaskGet(awId).parallelStream().forEach(e -> awTaskDelete(e.getAwId(), e.getSerial()));
 	}
 
 	@Transactional
-	public void awTaslDelete(final String awId,final int serial) {
+	public void awTaskDelete(final String awId, final int serial) {
 		ActualWorkTaskEntity.PrimaryKey pk = new ActualWorkTaskEntity.PrimaryKey();
 		pk.setAwId(awId);
 		pk.setSerial(serial);
-		actualWorkTaskMapper.deleteById(pk);;
+		actualWorkTaskMapper.deleteById(pk);
+		;
 	}
-
-
 
 }

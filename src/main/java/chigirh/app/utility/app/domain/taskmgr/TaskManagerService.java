@@ -3,12 +3,14 @@ package chigirh.app.utility.app.domain.taskmgr;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
 import org.springframework.stereotype.Service;
 
+import chigirh.app.utility.app.mapper.taskmgr.TaskGroupMapper;
 import chigirh.app.utility.app.mapper.taskmgr.TaskMapper;
 import chigirh.app.utility.app.mapper.taskmgr.TaskStatusMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,11 +31,35 @@ public class TaskManagerService {
 
 	final TaskStatusMapper taskStatusMapper;
 
+	final TaskGroupMapper taskGroupMapper;
+
 	final TaskMapper taskMapper;
 
-	public TaskEntity taskAdd(String taskName, String limitDate) {
+	public List<TaskGroupEntity> taskGroupGet() {
+		return taskGroupMapper.findAll();
+	}
+
+	public TaskGroupEntity taskGroupAdd(String taskGroupName) {
+		TaskGroupEntity entity = new TaskGroupEntity();
+		entity.setTaskGroupId(UUID.randomUUID().toString());
+		entity.setTaskGroupName(taskGroupName);
+		return taskGroupMapper.saveAndFlush(entity);
+	}
+
+	public void taskGroupDelete(final String taskGroupId) {
+		taskGroupMapper.deleteById(taskGroupId);
+		taskGet(taskGroupId).parallelStream().map(TaskEntity::getTaskId).forEach(this::taskDelete);
+	}
+
+	public List<TaskEntity> taskGet(final String taskGroupId) {
+		return taskMapper.findByTaskGroupIdEquals(taskGroupId);
+
+	}
+
+	public TaskEntity taskAdd(final String taskGroupId, String taskName, String limitDate) {
 		TaskEntity entity = new TaskEntity();
 		entity.setTaskId(UUID.randomUUID().toString());
+		entity.setTaskGroupId(taskGroupId);
 		entity.setTaskName(taskName);
 		Date nowTime = new Date();
 		entity.setStartDate(nowTime.getTime());
@@ -82,8 +108,16 @@ public class TaskManagerService {
 
 	}
 
-	public Optional<TaskStatusEntity> getStatus(final String statusId) {
-		return taskStatusMapper.findById(statusId);
+	public List<TaskStatusEntity> getStatus() {
+		return taskStatusMapper.findAll();
+	}
+
+	public TaskStatusEntity getStatus(final String statusId) {
+		Optional<TaskStatusEntity> opt = taskStatusMapper.findById(statusId);
+		if (opt.isPresent()) {
+			return opt.get();
+		}
+		return taskStatusMapper.findById("0").orElse(null);
 	}
 
 	public boolean isDateFormatTime(String date) {

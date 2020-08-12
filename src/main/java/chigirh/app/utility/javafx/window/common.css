@@ -66,6 +66,12 @@
 	-fx-text-fill:-fx-color-tf-edit-fg
 }
 
+.normar-window .utl-text-field:error{
+	-fx-background-color:-fx-color-error-bg;
+	-fx-text-fill:-fx-color-error-fg;
+	-fx-border-color: -fx-color-error-right -fx-color-error-dark -fx-color-error-dark -fx-color-error-right;
+}
+
 .normar-window .button{
 	-fx-background-color:-fx-color-tf-bg;
 	-fx-text-fill:-fx-cloor-tf-fg
@@ -76,15 +82,16 @@
 }
 
 .utl-table-row{
-	-fx-pref-height: 16.0px;
+	-fx-pref-height: 20.0px;
 }
 
 .utl-table-cell{
-	-fx-pref-height: 16.0px;
+	-fx-pref-height: 20.0px;
 }
 
-.utl-table-cell .utl-text-field,
-.utl-table-cell .check-box{
+.utl-table-row .utl-table-cell .utl-text-field,
+.utl-table-row .utl-table-cell .check-box,
+.utl-table-row .utl-table-cell .utl-choice-box{
 	-fx-pref-height: 25.0px;
 	-fx-background-radius: 0.0px;
 	-fx-background-color:-fx-color-table-bg;
@@ -92,22 +99,41 @@
 	-fx-border-color: -fx-color-table-right -fx-color-table-dark -fx-color-table-dark -fx-color-table-right;
 }
 
-.utl-table-cell .check-box .box{
+.utl-table-row:expanted .expanted-icon .utl-text-field{
+	-fx-background-color:#1e50a2;
+}
+
+.utl-table-row:limit .taskmgr-sts .utl-text-field{
+	-fx-background-color:#c9171e;
+}
+.utl-table-row:day-before .taskmgr-sts .utl-text-field{
+	-fx-background-color:#d7cf3a;
+}
+.utl-table-row:during .taskmgr-sts .utl-text-field{
+	-fx-background-color:#eaedf7;
+}
+.utl-table-row:rv .taskmgr-sts .utl-text-field{
+	-fx-background-color:#38b48b;
+}
+.utl-table-row:complete .taskmgr-sts .utl-text-field{
+	-fx-background-color:#2ca9e1;
+}
+.utl-table-row:hold .taskmgr-sts .utl-text-field{
+	-fx-background-color:#7a4171;
+}
+.utl-table-row:un .taskmgr-sts .utl-text-field{
+	-fx-background-color:#474a4d;
+}
+
+.utl-table-row .utl-table-cell .context-menu{
+	-fx-background-color:-fx-color-table-bg;
+	-fx-border-color: -fx-color-table-right -fx-color-table-dark -fx-color-table-dark -fx-color-table-right;
+}
+
+.utl-table-row .utl-table-cell .check-box .box{
 	-fx-background-color:#ffffff;
 	-fx-pref-height: 16.0px;
 	-fx-pref-width: 16.0px;
-}
-
-.utl-table-cell:error .utl-text-field,
-.utl-table-cell:error .check-box-table-cell,
-.utl-table-cell:error .check-box{
-	-fx-background-color:-fx-color-error-bg;
-	-fx-text-fill:-fx-color-error-fg;
-	-fx-border-color: -fx-color-error-right -fx-color-error-dark -fx-color-error-dark -fx-color-error-right;
-}
-
-.utl-table-icon{
-	-fx-shape: "M 0 -3.5 L 4 0 L 0 3.5 z";
 }
 
 .button{

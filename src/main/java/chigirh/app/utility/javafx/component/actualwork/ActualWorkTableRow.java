@@ -1,6 +1,7 @@
 package chigirh.app.utility.javafx.component.actualwork;
 
 
+import chigirh.app.utility.javafx.component.PseudoClassConstans;
 import chigirh.app.utility.javafx.component.TableRow;
 import chigirh.app.utility.javafx.component.TextTableCell;
 import javafx.beans.value.ObservableValue;
@@ -37,8 +38,6 @@ public class ActualWorkTableRow extends TableRow<ActualWorkTableRowObject> {
 		}
 
 		row.getChildren().add(newValue.getRowType() == RowType.PARENT ? icon() : emptyIcon());
-
-
 		row.getChildren().add(newValue.getRowFactory().get());
 
 		if(newValue.getRowType() == RowType.PARENT) {
@@ -57,6 +56,7 @@ public class ActualWorkTableRow extends TableRow<ActualWorkTableRowObject> {
 
 	private TextTableCell icon() {
 		TextTableCell icon = new TextTableCell("▼");
+		icon.getStyleClass().add("expanted-icon");
 		icon.setWidth(ICON_WIDTH);
 		icon.addEvenet(MouseEvent.MOUSE_CLICKED, e -> iconClickHandler(e, icon));
 		return icon;
@@ -72,7 +72,7 @@ public class ActualWorkTableRow extends TableRow<ActualWorkTableRowObject> {
 		tableRowObject.getChildren().forEach(e -> e.setVisible(!tableRowObject.isExpanted()));
 		tableRowObject.setExpanted(!tableRowObject.isExpanted());
 
-		icon.getCell().setText(tableRowObject.isExpanted() ? "▽" : "▼");
+		pseudoClassStateChanged(PseudoClassConstans.EXPANTED,tableRowObject.isExpanted());
 
 		callBack.run();
 	}

@@ -7,20 +7,22 @@
 <?import javafx.scene.layout.VBox?>
 <?import chigirh.app.utility.javafx.component.UtlTextField?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="600.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chigirh.app.utility.app.screen.actualwork.ActualWorkPresenter">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="750.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chigirh.app.utility.app.screen.taskmgr.TaskManagerPresenter">
    <children>
       <VBox layoutX="149.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane fx:id="tableArea" prefWidth="400.0" />
+            <AnchorPane fx:id="tableArea"/>
             <AnchorPane>
                <children>
                   <HBox prefHeight="29.0" AnchorPane.bottomAnchor="2.0" AnchorPane.topAnchor="2.0">
                      <children>
-                        <UtlTextField fx:id="awAddTf" prefHeight="25.0" prefWidth="300.0" />
+                        <UtlTextField fx:id="addTf" prefHeight="25.0" prefWidth="300.0" />
                         <AnchorPane prefWidth="10.0" />
-                        <Button fx:id="awAddBt" mnemonicParsing="false" onAction="#onAwAdd" prefHeight="23.0" prefWidth="90.0" text="新規追加" />
+                        <UtlTextField fx:id="addLimitTf" prefHeight="25.0" prefWidth="120.0" />
                         <AnchorPane prefWidth="10.0" />
-                        <Button fx:id="awDeleteBt" mnemonicParsing="false" onAction="#onAwDelete" prefHeight="23.0" prefWidth="90.0" text="削除" />
+                        <Button fx:id="addBt" mnemonicParsing="false" onAction="#onAwAdd" prefHeight="23.0" prefWidth="90.0" text="新規追加" />
+                        <AnchorPane prefWidth="10.0" />
+                        <Button fx:id="deleteBt" mnemonicParsing="false" onAction="#onAwDelete" prefHeight="23.0" prefWidth="90.0" text="削除" />
                      </children>
                   </HBox>
                </children>
