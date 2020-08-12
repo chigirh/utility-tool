@@ -32,7 +32,7 @@ public class TaskRow implements SimpleTableRow<String> {
 	private ObjectProperty<UtlLabelValueBean<TaskStatusEntity>> selectedStatusProperty = new SimpleObjectProperty<UtlLabelValueBean<TaskStatusEntity>>(
 			this, "selectedStatusProperty");
 
-	private ObjectProperty<ObservableList<TaskStatusEntity>> statusPropertyListPropery = new SimpleObjectProperty<ObservableList<TaskStatusEntity>>(
+	private ObjectProperty<ObservableList<UtlLabelValueBean<TaskStatusEntity>>> statusPropertyListPropery = new SimpleObjectProperty<ObservableList<UtlLabelValueBean<TaskStatusEntity>>>(
 			this, "statusPropertyListPropery");
 
 	private StringProperty limitDateProperty = new SimpleStringProperty(this, "limitDate");
@@ -72,11 +72,11 @@ public class TaskRow implements SimpleTableRow<String> {
 		return selectedStatusProperty.get();
 	}
 
-	public ObjectProperty<ObservableList<TaskStatusEntity>> statusPropertyListPropery() {
+	public ObjectProperty<ObservableList<UtlLabelValueBean<TaskStatusEntity>>> statusListPropery() {
 		return statusPropertyListPropery;
 	}
 
-	public void setStatusPropertyList(List<TaskStatusEntity> statusPropertyList) {
+	public void setStatusPropertyList(List<UtlLabelValueBean<TaskStatusEntity>> statusPropertyList) {
 		statusPropertyListPropery.set(FXCollections.observableArrayList(statusPropertyList));
 	}
 

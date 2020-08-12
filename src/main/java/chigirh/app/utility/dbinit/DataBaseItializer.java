@@ -130,15 +130,27 @@ public class DataBaseItializer {
 		isCreate = issuer.createTable(actualWorkTask);
 		LOGGER.info("result:{}", isCreate ? "SUCCESS!!" : "EXEITS");
 
+		CreateTableSQL taskGroup = CreateTableSQL.CREATE_TABLE().tableName("t_task_group")//
+				.column(Col.builder().index(1).name("task_group_id").type(String.class).isPk(true).build())//
+				.column(Col.builder().index(2).name("task_group_name").type(String.class).build())//
+				.column(Col.builder().index(7).name("remark").type(String.class).build())//
+				.build();
+		LOGGER.info("table name {}", taskGroup.getTableName());
+		isCreate = issuer.createTable(taskGroup);
+		LOGGER.info("result:{}", isCreate ? "SUCCESS!!" : "EXEITS");
+
 		CreateTableSQL task = CreateTableSQL.CREATE_TABLE().tableName("t_task")//
 				.column(Col.builder().index(1).name("task_id").type(String.class).isPk(true).build())//
-				.column(Col.builder().index(2).name("task_name").type(String.class).build())//
-				.column(Col.builder().index(3).name("start_date").type(Integer.class).isNotNull(true).build())//
-				.column(Col.builder().index(4).name("update_date").type(Integer.class).isNotNull(true).build())//
-				.column(Col.builder().index(5).name("limit_date").type(Integer.class).build())//
-				.column(Col.builder().index(6).name("status_id").type(String.class).isNotNull(true).build())//
-				.column(Col.builder().index(7).name("remark").type(String.class).build())//
-				.fk(Fk.builder().col("status_id").refTab("m_task_status").refCol("status_id")
+				.column(Col.builder().index(2).name("task_group_id").type(String.class).isPk(true).build())//
+				.column(Col.builder().index(3).name("task_name").type(String.class).build())//
+				.column(Col.builder().index(4).name("start_date").type(Integer.class).isNotNull(true).build())//
+				.column(Col.builder().index(5).name("update_date").type(Integer.class).isNotNull(true).build())//
+				.column(Col.builder().index(6).name("limit_date").type(Integer.class).build())//
+				.column(Col.builder().index(7).name("status_id").type(String.class).isNotNull(true).build())//
+				.column(Col.builder().index(8).name("remark").type(String.class).build())//
+				.fk(Fk.builder().col("task_group_id").refTab("t_task_group").refCol("task_group_id").setNull(true)
+						.build())//
+				.fk(Fk.builder().col("status_id").refTab("m_task_status").refCol("status_id").setNull(true)
 						.build())//
 				.build();
 		LOGGER.info("table name {}", task.getTableName());

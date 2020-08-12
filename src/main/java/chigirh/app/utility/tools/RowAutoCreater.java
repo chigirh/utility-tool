@@ -15,10 +15,10 @@ public class RowAutoCreater {
 
 	public static void main(String[] args) {
 
-//		actualWorkRow();
-//		actualWorkTaskRow();
+		//		actualWorkRow();
+		//		actualWorkTaskRow();
 
-//		taskRow();
+		//				taskRow();
 
 	}
 
@@ -63,7 +63,7 @@ public class RowAutoCreater {
 				.keyType("String")//
 				.key(Col.builder().name("taskId").type("String").build())//
 				.col(Col.builder().name("taskName").type("String").build())//
-				.col(Col.builder().name("statusId").type("String").build())//
+				.col(Col.builder().name("status").type("TaskStatusEntity").isCheeckBox(true).build())//
 				.col(Col.builder().name("limitDate").type("String").build())//
 				.col(Col.builder().name("startDate").type("String").build())//
 				.col(Col.builder().name("updateDate").type("String").build())//
@@ -102,36 +102,106 @@ public class RowAutoCreater {
 				pw.println();
 			}
 
-
 			for (Col col : def.getCols()) {
-				pw.println("	private " + col.getType() + "Property " + col.getName() + "Property = new Simple"
-						+ col.getType() + "Property(this,\"" + col.getName() + "\");");
-				pw.println();
+
+				if (col.isCheeckBox) {
+
+					pw.println("private ObjectProperty<UtlLabelValueBean<" + col.getType()
+							+ ">> selected" + col.getName().substring(0, 1).toUpperCase()
+							+ col.getName().substring(1)
+							+ "Property = new SimpleObjectProperty<UtlLabelValueBean<" + col.getType()
+							+ ">>(this, \"selected" + col.getName().substring(0, 1).toUpperCase()
+							+ col.getName().substring(1)
+							+ "Property\");");
+					pw.println();
+					pw.println("private ObjectProperty<ObservableList<UtlLabelValueBean<<" + col.getType()
+							+ ">>> " + col.getName()
+							+ "PropertyListPropery = new SimpleObjectProperty<ObservableListUtlLabelValueBean<<<"
+							+ col.getType()
+							+ ">>>(this, \"" + col.getName() + "PropertyListPropery\");");
+					pw.println();
+
+				} else {
+					pw.println("	private " + col.getType() + "Property " + col.getName() + "Property = new Simple"
+							+ col.getType() + "Property(this,\"" + col.getName() + "\");");
+					pw.println();
+				}
+
 			}
 
 			pw.println("	@Override");
 			pw.println("	public String getKey() {");
-			pw.println("		return " + def.getKeys().stream().map(Col::getName).collect(Collectors.joining("+")) + ";");
+			pw.println(
+					"		return " + def.getKeys().stream().map(Col::getName).collect(Collectors.joining("+")) + ";");
 			pw.println("	}");
 			pw.println("");
 
 			for (Col col : def.getCols()) {
 
-				pw.println("	public " + col.getType() + "Property " + col.getName() + "Property() {");
-				pw.println("		return " + col.getName() + "Property;");
-				pw.println("	}");
-				pw.println();
-				pw.println("	public void set" + col.getName().substring(0, 1).toUpperCase() + col.getName().substring(1)
-						+ "(" + col.getType() + " " + col.getName() + ") {");
-				pw.println("		"+col.getName() + "Property.set(" + col.getName() + ");");
-				pw.println("	}");
-				pw.println();
-				pw.println("	public " + col.getType() + " get" + col.getName().substring(0, 1).toUpperCase()
-						+ col.getName().substring(1)
-						+ "() {");
-				pw.println("		return " + col.getName() + "Property.get();");
-				pw.println("	}");
-				pw.println();
+				if (col.isCheeckBox) {
+					pw.println("public ObjectProperty<UtlLabelValueBean<" + col.getType()
+							+ ">> selected" + col.getName().substring(0, 1).toUpperCase()
+							+ col.getName().substring(1)
+							+ "Property() {");
+					pw.println("return selected" + col.getName().substring(0, 1).toUpperCase()
+							+ col.getName().substring(1)
+							+ "Property;");
+					pw.println("}");
+					pw.println();
+					pw.println(
+							"public void setSelected" + col.getName().substring(0, 1).toUpperCase()
+									+ col.getName().substring(1)
+									+ "(UtlLabelValueBean<" + col.getType() + "> selected"
+									+ col.getName().substring(0, 1).toUpperCase()
+									+ col.getName().substring(1)
+									+ ") {");
+					pw.println("selected" + col.getName().substring(0, 1).toUpperCase()
+							+ col.getName().substring(1)
+							+ "Property.set(selectedStatus);");
+					pw.println("}");
+					pw.println();
+					pw.println("public UtlLabelValueBean<" + col.getType() + "> get"
+							+ col.getName().substring(0, 1).toUpperCase()
+							+ col.getName().substring(1)
+							+ "Status() {");
+					pw.println("return selected" + col.getName().substring(0, 1).toUpperCase()
+							+ col.getName().substring(1)
+							+ "Property.get();");
+					pw.println("}");
+					pw.println();
+					pw.println("public ObjectProperty<ObservableList<UtlLabelValueBean<<" + col.getType()
+							+ ">>> " + col.getName() + "ListPropery() {");
+					pw.println("return " + col.getName() + "PropertyListPropery;");
+					pw.println("}");
+					pw.println();
+					pw.println("public void set" + col.getName().substring(0, 1).toUpperCase()
+							+ col.getName().substring(1)
+							+ "PropertyList(List<UtlLabelValueBean<<" + col.getType() + ">> " + col.getName() + "PropertyList) {");
+					pw.println("" + col.getName() + "PropertyListPropery.set(FXCollections.observableArrayList("
+							+ col.getName() + "PropertyList));");
+					pw.println("}");
+					pw.println();
+
+				} else {
+
+					pw.println("	public " + col.getType() + "Property " + col.getName() + "Property() {");
+					pw.println("		return " + col.getName() + "Property;");
+					pw.println("	}");
+					pw.println();
+					pw.println(
+							"	public void set" + col.getName().substring(0, 1).toUpperCase()
+									+ col.getName().substring(1)
+									+ "(" + col.getType() + " " + col.getName() + ") {");
+					pw.println("		" + col.getName() + "Property.set(" + col.getName() + ");");
+					pw.println("	}");
+					pw.println();
+					pw.println("	public " + col.getType() + " get" + col.getName().substring(0, 1).toUpperCase()
+							+ col.getName().substring(1)
+							+ "() {");
+					pw.println("		return " + col.getName() + "Property.get();");
+					pw.println("	}");
+					pw.println();
+				}
 			}
 
 			pw.println("}");
@@ -168,6 +238,8 @@ public class RowAutoCreater {
 		private String name;
 
 		String type;
+
+		boolean isCheeckBox = false;
 
 	}
 

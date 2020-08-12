@@ -8,14 +8,14 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 
-public abstract class TableCell<E extends Control, P extends ReadOnlyProperty<?>> extends AnchorPane {
+public abstract class UtlTableCell<E extends Control, P extends ReadOnlyProperty<?>> extends AnchorPane {
 
 	private static final String STYLE_CLASS = "utl-table-cell";
 
 	@Getter
 	protected E cell;
 
-	protected TableCell() {
+	protected UtlTableCell() {
 		getStyleClass().add(STYLE_CLASS);
 	}
 

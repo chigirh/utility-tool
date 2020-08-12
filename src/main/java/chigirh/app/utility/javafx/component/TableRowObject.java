@@ -19,6 +19,8 @@ public abstract class TableRowObject<E extends TableRowObject<E>> {
 
 	private boolean isDisplay = false;
 
+	private boolean isVisible = false;
+
 	private E prev = null;
 
 	private E next = null;
