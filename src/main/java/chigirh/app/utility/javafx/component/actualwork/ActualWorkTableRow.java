@@ -27,6 +27,7 @@ public class ActualWorkTableRow extends TableRow<ActualWorkTableRowObject> {
 	protected void changed(ObservableValue<? extends ActualWorkTableRowObject> observable,
 			ActualWorkTableRowObject oldValue, ActualWorkTableRowObject newValue) {
 		row.getChildren().clear();
+
 		if (newValue == null || newValue.getRowType() == RowType.EMPTY) {
 			HBox hBox = new HBox();
 			TextTableCell emptyCell = new TextTableCell("");
@@ -39,7 +40,7 @@ public class ActualWorkTableRow extends TableRow<ActualWorkTableRowObject> {
 
 		row.getChildren().add(newValue.getRowType() == RowType.PARENT ? icon() : emptyIcon());
 		row.getChildren().add(newValue.getRowFactory().get());
-
+		pseudoClassStateChanged(PseudoClassConstans.EXPANTED,newValue.isExpanted());
 		if(newValue.getRowType() == RowType.PARENT) {
 			Button addButton = new Button("追加");
 			addButton.setOnAction(e -> newValue.getAddTask().run());
