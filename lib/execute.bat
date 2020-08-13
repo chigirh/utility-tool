@@ -1,1 +1,1 @@
-java -jar app-sample.jar
+java -jar application.jar
