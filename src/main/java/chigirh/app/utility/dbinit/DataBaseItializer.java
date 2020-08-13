@@ -56,7 +56,7 @@ public class DataBaseItializer {
 		LOGGER.info("result ", isCreate ? "SUCCESS!!" : "EXEITS");
 
 		CreateTableSQL actualWorkClassificationJunction = CreateTableSQL.CREATE_TABLE()
-				.tableName("m_actual_work_classificationJunction")//
+				.tableName("m_actual_work_classification_junction")//
 				.column(Col.builder().index(1).name("parent").type(String.class).isPk(true).build())//
 				.column(Col.builder().index(2).name("child").type(String.class).isPk(true).build())//
 				.fk(Fk.builder().col("parent").refTab("m_actual_work_classification1").refCol("classification1_id")

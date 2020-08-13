@@ -80,9 +80,11 @@ public class TaskManagerService {
 
 	}
 
-	public TaskEntity taskUpdate(final String taskId, String taskName, String limitDate, String statusId) {
+	public TaskEntity taskUpdate(final String taskId, final String taskGroupId, String taskName, String limitDate,
+			String statusId) {
 		TaskEntity entity = new TaskEntity();
 		entity.setTaskId(taskId);
+		entity.setTaskGroupId(taskGroupId);
 		entity.setTaskName(taskName);
 		Date nowTime = new Date();
 		entity.setStartDate(nowTime.getTime());

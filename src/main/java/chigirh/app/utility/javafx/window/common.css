@@ -45,13 +45,18 @@
 	-fx-background-color:-fx-color-base-bg;
 }
 
-.utl-text-field,
+
 .utl-label{
 	-fx-background-color:-fx-color-tf-bg;
 	-fx-text-fill:-fx-cloor-tf-fg;
 }
 
- .utl-text-field{
+.utl-text-field,
+.utl-text-field,
+.utl-choice-box,
+.context-menu{
+	-fx-background-color:-fx-color-tf-bg;
+	-fx-text-fill:-fx-cloor-tf-fg;
 	-fx-border-color: -fx-color-tf-dark -fx-cloor-tf-right -fx-cloor-tf-right -fx-color-tf-dark;
 }
 

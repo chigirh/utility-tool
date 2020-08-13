@@ -19,7 +19,7 @@ public class TextTableColumn<R extends SimpleTableRow<?>> extends TableColumn<R,
 
 	@Override
 	public void binding(UtlTableCell<?, ?> cell, StringProperty prop,R row) {
-		JavaFxBindingUtils.binding((TextTableCell) cell, prop);
+		JavaFxBindingUtils.bindingCell((TextTableCell) cell, prop);
 	}
 
 }
