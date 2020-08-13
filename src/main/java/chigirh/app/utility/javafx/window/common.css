@@ -15,10 +15,10 @@
 	-fx-color-tf-edit-dark:#17184b;
 	-fx-color-tf-edit-right:#165e83;
 
-	-fx-color-bt-bg:#313131;
-	-fx-color-bt-fg:#eaeaea;
-	-fx-color-bt-dark:#2d2d2d;
-	-fx-color-bt-right:#828282;
+	-fx-color-bt-bg:#000b00;
+	-fx-color-bt-fg:#FFFFFF;
+	-fx-color-bt-dark:#0d0015;
+	-fx-color-bt-right:#595455;
 
 	-fx-color-table-bg:#272727;
 	-fx-color-table-fg:#eaeaea;
@@ -45,36 +45,27 @@
 	-fx-background-color:-fx-color-base-bg;
 }
 
-.normar-window .utl-text-field,
-.normar-window .utl-label{
+.utl-text-field,
+.utl-label{
 	-fx-background-color:-fx-color-tf-bg;
 	-fx-text-fill:-fx-cloor-tf-fg;
 }
 
-.normar-window .utl-text-field{
+ .utl-text-field{
 	-fx-border-color: -fx-color-tf-dark -fx-cloor-tf-right -fx-cloor-tf-right -fx-color-tf-dark;
 }
 
-.normar-window .utl-text-field:error{
+.utl-text-field:error,
+.utl-table-row .utl-table-cell .utl-text-field:error{
 	-fx-background-color:-fx-color-error-bg;
 	-fx-text-fill:-fx-color-error-fg;
 	-fx-border-color: -fx-color-error-right -fx-color-error-dark -fx-color-error-dark -fx-color-error-right;
 }
 
-.normar-window .utl-text-field:focused{
+.utl-text-field:focused,
+.utl-table-row .utl-table-cell .utl-text-field:focused{
 	-fx-background-color:-fx-color-tf-edit-bg;
 	-fx-text-fill:-fx-color-tf-edit-fg
-}
-
-.normar-window .utl-text-field:error{
-	-fx-background-color:-fx-color-error-bg;
-	-fx-text-fill:-fx-color-error-fg;
-	-fx-border-color: -fx-color-error-right -fx-color-error-dark -fx-color-error-dark -fx-color-error-right;
-}
-
-.normar-window .button{
-	-fx-background-color:-fx-color-tf-bg;
-	-fx-text-fill:-fx-cloor-tf-fg
 }
 
 .table{

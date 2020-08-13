@@ -39,7 +39,7 @@ public class ActualWorkTableRow extends TableRow<ActualWorkTableRowObject> {
 		}
 
 		row.getChildren().add(newValue.getRowType() == RowType.PARENT ? icon() : emptyIcon());
-		row.getChildren().add(newValue.getRowFactory().get());
+		row.getChildren().add(newValue.createRow());
 		pseudoClassStateChanged(PseudoClassConstans.EXPANTED,newValue.isExpanted());
 		if(newValue.getRowType() == RowType.PARENT) {
 			Button addButton = new Button("追加");

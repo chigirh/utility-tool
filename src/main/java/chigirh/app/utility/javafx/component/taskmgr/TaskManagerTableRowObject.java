@@ -18,11 +18,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TaskManagerTableRowObject extends TableRowObject<TaskManagerTableRowObject> {
+public class TaskManagerTableRowObject extends TableRowObject<TaskManagerTableRowObject,TaskRow> {
 
 	private ObjectProperty<TaskManagerTableRow> tableRowProperty = new SimpleObjectProperty<>();
-
-	private TaskRow vm;
 
 	public TaskManagerTableRowObject(RowType rowType, TaskRow vm) {
 		super(rowType);

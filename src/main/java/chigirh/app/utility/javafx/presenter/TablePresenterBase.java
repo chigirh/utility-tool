@@ -20,7 +20,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public abstract class TablePresenterBase<E, V extends SimpleTableRow<?>, R extends TableRow<O>, O extends TableRowObject<O>>
+public abstract class TablePresenterBase<E, V extends SimpleTableRow<?>, R extends TableRow<O>, O extends TableRowObject<O,V>>
 		extends PresenterBase {
 
 	private static final String STYLE_CLASS = ".table";

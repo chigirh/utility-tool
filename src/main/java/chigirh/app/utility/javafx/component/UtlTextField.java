@@ -1,5 +1,7 @@
 package chigirh.app.utility.javafx.component;
 
+import org.apache.commons.lang3.StringUtils;
+
 import chigirh.app.utility.javafx.util.JavaFxTextFieldUtils;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -26,7 +28,8 @@ public class UtlTextField extends TextField {
 
 		focusedProperty().addListener((ob, ov, nv) -> {
 			if (ov)
-				if (validator == null || JavaFxTextFieldUtils.inputCheck(this, validator)) {
+				if (StringUtils.isEmpty(getText()) || validator == null
+						|| JavaFxTextFieldUtils.inputCheck(this, validator)) {
 					pseudoClassStateChanged(PseudoClassConstans.ERROR, false);
 					confirmNoticeProperty.set(!confirmNoticeProperty.get());
 				} else {

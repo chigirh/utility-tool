@@ -11,8 +11,6 @@ import javafx.scene.layout.HBox;
 
 public class TaskManagerTableRow extends TableRow<TaskManagerTableRowObject> {
 
-	private static final double ICON_WIDTH = 30.0;
-
 	ObjectProperty<UtlLabelValueBean<TaskStatusEntity>> statusProperty;
 
 
@@ -40,7 +38,7 @@ public class TaskManagerTableRow extends TableRow<TaskManagerTableRowObject> {
 		stsCell .setWidth(20.0);
 		stsCell .getStyleClass().add("taskmgr-sts");
 		row.getChildren().add(stsCell );
-		row.getChildren().add(newValue.getRowFactory().get());
+		row.getChildren().add(newValue.createRow());
 	}
 
 }
