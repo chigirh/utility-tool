@@ -9,12 +9,20 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import chigirh.app.utility.app.domain.actualwork.ActualWorkClassifcation1Entity;
+import chigirh.app.utility.app.domain.actualwork.ActualWorkClassifcation2Entity;
+import chigirh.app.utility.app.domain.actualwork.ActualWorkClassifcationService;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkGroupEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkService;
 import chigirh.app.utility.common.prop.FxmlProperties;
+import chigirh.app.utility.javafx.component.UtlChoiceBox;
 import chigirh.app.utility.javafx.component.UtlLabel;
+import chigirh.app.utility.javafx.component.UtlLabelValueBean;
+import chigirh.app.utility.javafx.component.UtlTextField;
 import chigirh.app.utility.javafx.presenter.PresenterBase;
+import chigirh.app.utility.javafx.util.JavaFxBindingUtils;
 import chigirh.app.utility.javafx.window.WindowFactory;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -33,17 +41,34 @@ public class ActualWorkIndexPresenter extends PresenterBase {
 
 	private static final double HEIGHT = 30.0;
 
+	ActualWorkIndexViewModel vm = new ActualWorkIndexViewModel();
+
+	/*
+	 * 一覧タブ
+	 */
+
 	@FXML
 	private ScrollPane awScroll;
-
 	@FXML
 	private VBox awBox;
-
 	@FXML
 	private TextField awAddTf;
-
 	@FXML
 	private Button awAddBt;
+
+	/*
+	 * 登録タブ
+	 */
+	@FXML
+	private UtlTextField classification1AddTf;
+	@FXML
+	private UtlTextField classification2AddTf;
+	@FXML
+	private UtlChoiceBox<ActualWorkClassifcation1Entity> classification1AddCb;
+	@FXML
+	private UtlChoiceBox<ActualWorkClassifcation1Entity> classification1RemoveCb;
+	@FXML
+	private UtlChoiceBox<ActualWorkClassifcation2Entity> classification2RemoveCb;
 
 	final WindowFactory windowFactory;
 
@@ -51,18 +76,37 @@ public class ActualWorkIndexPresenter extends PresenterBase {
 
 	final ActualWorkService actualWorkService;
 
+	final ActualWorkClassifcationService classifcationService;
+
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		awScroll.setHbarPolicy(ScrollBarPolicy.NEVER);
+
+		JavaFxBindingUtils.bindingNode(classification1AddTf, vm.classifcation1AddProperty());
+		JavaFxBindingUtils.bindingNode(classification1AddCb,
+				vm.selectedClassifcation1DispProperty(),
+				vm.classifcation1DispListPropery());
+		JavaFxBindingUtils.bindingNode(classification2AddTf, vm.classifcation2AddProperty());
+		JavaFxBindingUtils.bindingNode(classification1RemoveCb,
+				vm.selectedClassifcation1RemoveCbProperty(),
+				vm.classifcation1DispListPropery());
+		JavaFxBindingUtils.bindingNode(classification2RemoveCb,
+				vm.selectedClassifcation2RemoveCbProperty(),
+				vm.classifcation2RemoveCbListPropery());
+
+		vm.setClassifcation1DispPropertyList(classifcationService.classifcation1Get().stream()
+				.map(this::classifcation1BeanMappr).collect(Collectors.toList()));
+
+		vm.selectedClassifcation1RemoveCbProperty().addListener(this::selectedRemoveClassifcation1Change);
 
 	}
 
 	@Override
 	public void onStart() {
-		update();
+		listUupdate();
 	}
 
-	private void update() {
+	private void listUupdate() {
 		awBox.getChildren().clear();
 		awBox.getChildren()
 				.addAll(actualWorkService.awGroupGet().stream().map(this::creteRow).collect(Collectors.toList()));
@@ -92,7 +136,7 @@ public class ActualWorkIndexPresenter extends PresenterBase {
 		HBox.setMargin(remButton, mergin);
 		remButton.setOnAction(e -> {
 			actualWorkService.awGroupDelete(entity.getAwGroupId());
-			update();
+			listUupdate();
 		});
 
 		row.getChildren().add(addbutton);
@@ -115,6 +159,60 @@ public class ActualWorkIndexPresenter extends PresenterBase {
 		}
 		awAddTf.setText("");
 		awBox.getChildren().add(creteRow(entity));
+	}
+
+	@FXML
+	public void onClassification1AddAction(ActionEvent e) {
+		if (StringUtils.isEmpty(vm.getClassifcation1Add())) {
+			return;
+		}
+		ActualWorkClassifcation1Entity addEntity = classifcationService.classifcation1Add(vm.getClassifcation1Add());
+		vm.setClassifcation1Add("");
+		vm.classifcation1DispListPropery().get().add(classifcation1BeanMappr(addEntity));
+	}
+
+	@FXML
+	public void onClassification2AddAction(ActionEvent e) {
+		if (vm.getSelectedClassifcation1Disp() == null) {
+			return;
+		}
+		ActualWorkClassifcation2Entity addEntity = classifcationService
+				.classifcation2Add(vm.getSelectedClassifcation1Disp().getValue().getId(), vm.getClassifcation2Add());
+		vm.setClassifcation2Add("");
+		if (StringUtils.equals(vm.getSelectedClassifcation1Disp().getValue().getId(),
+				vm.getSelectedClassifcation1RemoveCb().getValue().getId())) {
+			vm.classifcation2RemoveCbListPropery().get().add(classifcation2BeanMappr(addEntity));
+		}
+	}
+
+	@FXML
+	public void onClassification1RemoveAction(ActionEvent e) {
+	}
+
+	@FXML
+	public void onClassification2RemoveAction(ActionEvent e) {
+	}
+
+	private UtlLabelValueBean<ActualWorkClassifcation1Entity> classifcation1BeanMappr(
+			ActualWorkClassifcation1Entity entity) {
+		return new UtlLabelValueBean<>(entity.getName(), entity);
+	}
+
+	private UtlLabelValueBean<ActualWorkClassifcation2Entity> classifcation2BeanMappr(
+			ActualWorkClassifcation2Entity entity) {
+		return new UtlLabelValueBean<>(entity.getName(), entity);
+	}
+
+	private void selectedRemoveClassifcation1Change(
+			ObservableValue<? extends UtlLabelValueBean<ActualWorkClassifcation1Entity>> observable,
+			UtlLabelValueBean<ActualWorkClassifcation1Entity> oldValue,
+			UtlLabelValueBean<ActualWorkClassifcation1Entity> newValue) {
+		if (newValue == null) {
+			return;
+		}
+		vm.setClassifcation2RemoveCbPropertyList(
+				classifcationService.findByclassifcation1(newValue.getValue().getId()).stream()
+						.map(this::classifcation2BeanMappr).collect(Collectors.toList()));
 	}
 
 }

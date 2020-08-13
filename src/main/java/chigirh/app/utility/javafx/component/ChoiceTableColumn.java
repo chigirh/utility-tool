@@ -23,7 +23,7 @@ public class ChoiceTableColumn<R extends SimpleTableRow<?>, C>
 	@SuppressWarnings("unchecked")
 	@Override
 	public void binding(UtlTableCell<?, ?> cell, ObjectProperty<UtlLabelValueBean<C>> prop,R row) {
-		JavaFxBindingUtils.binding((ChoiceTableCell<C>) cell, prop, itemPropertyFactory.apply(row));
+		JavaFxBindingUtils.bindingCell((ChoiceTableCell<C>) cell, prop, itemPropertyFactory.apply(row));
 
 	}
 

@@ -14,7 +14,7 @@ public class CheckTableColumn<R extends SimpleTableRow<?>> extends TableColumn<R
 
 	@Override
 	public void binding(UtlTableCell<?,?> cell, BooleanProperty prop,R row) {
-		JavaFxBindingUtils.binding((CheckTableCell)cell, prop);
+		JavaFxBindingUtils.bindingCell((CheckTableCell)cell, prop);
 	}
 
 }

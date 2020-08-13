@@ -20,6 +20,8 @@ public class RowAutoCreater {
 
 		//				taskRow();
 
+//				awIndexVm();
+
 	}
 
 	private static void actualWorkRow() {
@@ -73,11 +75,32 @@ public class RowAutoCreater {
 		create(def);
 	}
 
+	private static void awIndexVm() {
+		Def def = Def.builder()//
+				.packageName("chigirh.app.utility.app.screen.index.actualwork")//
+				.rowName("ActualWorkIndex")
+				.pass("src/main/java/chigirh/app/utility/app/screen/index/actualwork")//
+				.keyType("String")//
+				.col(Col.builder().name("classifcation1Add").type("String").build())//
+				.col(Col.builder().name("classifcation1Disp").type("ActualWorkClassifcation1Entity").isCheeckBox(true)
+						.build())//
+				.col(Col.builder().name("classifcation2Add").type("String").build())//
+				.col(Col.builder().name("classifcation1RemoveCb").type("ActualWorkClassifcation1Entity").isCheeckBox(true)
+						.build())//
+				.col(Col.builder().name("classifcation2RemoveCb").type("ActualWorkClassifcation2Entity").isCheeckBox(true)
+						.build())//
+				.build();
+
+		create(def);
+	}
+
 	private static void create(Def def) {
 		try (PrintWriter pw = new PrintWriter(
 				new BufferedWriter(new FileWriter(def.getPass() + "/" + def.getRowName() + "Row.java", false)));) {
 
 			pw.println("package " + def.getPackageName() + ";");
+			pw.println();
+			pw.println("import java.util.List;");
 			pw.println();
 			pw.println("import chigirh.app.utility.javafx.component.SimpleTableRow;");
 			pw.println("import javafx.beans.property.SimpleStringProperty;");
@@ -109,16 +132,15 @@ public class RowAutoCreater {
 					pw.println("private ObjectProperty<UtlLabelValueBean<" + col.getType()
 							+ ">> selected" + col.getName().substring(0, 1).toUpperCase()
 							+ col.getName().substring(1)
-							+ "Property = new SimpleObjectProperty<UtlLabelValueBean<" + col.getType()
-							+ ">>(this, \"selected" + col.getName().substring(0, 1).toUpperCase()
+							+ "Property = new SimpleObjectProperty<>(this, \"selected"
+							+ col.getName().substring(0, 1).toUpperCase()
 							+ col.getName().substring(1)
 							+ "Property\");");
 					pw.println();
-					pw.println("private ObjectProperty<ObservableList<UtlLabelValueBean<<" + col.getType()
+					pw.println("private ObjectProperty<ObservableList<UtlLabelValueBean<" + col.getType()
 							+ ">>> " + col.getName()
-							+ "PropertyListPropery = new SimpleObjectProperty<ObservableListUtlLabelValueBean<<<"
-							+ col.getType()
-							+ ">>>(this, \"" + col.getName() + "PropertyListPropery\");");
+							+ "PropertyListPropery = new SimpleObjectProperty<>(this, \"" + col.getName()
+							+ "PropertyListPropery\",FXCollections.observableArrayList(new ArrayList<>()));");
 					pw.println();
 
 				} else {
@@ -157,26 +179,28 @@ public class RowAutoCreater {
 									+ ") {");
 					pw.println("selected" + col.getName().substring(0, 1).toUpperCase()
 							+ col.getName().substring(1)
-							+ "Property.set(selectedStatus);");
+							+ "Property.set(selected" + col.getName().substring(0, 1).toUpperCase()
+							+ col.getName().substring(1) + ");");
 					pw.println("}");
 					pw.println();
-					pw.println("public UtlLabelValueBean<" + col.getType() + "> get"
+					pw.println("public UtlLabelValueBean<" + col.getType() + "> getSelected"
 							+ col.getName().substring(0, 1).toUpperCase()
 							+ col.getName().substring(1)
-							+ "Status() {");
+							+ "() {");
 					pw.println("return selected" + col.getName().substring(0, 1).toUpperCase()
 							+ col.getName().substring(1)
 							+ "Property.get();");
 					pw.println("}");
 					pw.println();
-					pw.println("public ObjectProperty<ObservableList<UtlLabelValueBean<<" + col.getType()
+					pw.println("public ObjectProperty<ObservableList<UtlLabelValueBean<" + col.getType()
 							+ ">>> " + col.getName() + "ListPropery() {");
 					pw.println("return " + col.getName() + "PropertyListPropery;");
 					pw.println("}");
 					pw.println();
 					pw.println("public void set" + col.getName().substring(0, 1).toUpperCase()
 							+ col.getName().substring(1)
-							+ "PropertyList(List<UtlLabelValueBean<<" + col.getType() + ">> " + col.getName() + "PropertyList) {");
+							+ "PropertyList(List<UtlLabelValueBean<" + col.getType() + ">> " + col.getName()
+							+ "PropertyList) {");
 					pw.println("" + col.getName() + "PropertyListPropery.set(FXCollections.observableArrayList("
 							+ col.getName() + "PropertyList));");
 					pw.println("}");

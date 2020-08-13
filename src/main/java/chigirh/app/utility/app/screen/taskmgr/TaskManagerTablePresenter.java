@@ -172,7 +172,8 @@ public class TaskManagerTablePresenter
 	}
 
 	private void update(TaskRow vm) {
-		TaskEntity updateEntity = taskManagerService.taskUpdate(vm.getKey(), vm.getTaskName(), vm.getLimitDate(),
+		TaskEntity updateEntity = taskManagerService.taskUpdate(vm.getKey(), windowParam.getTaskGroupId(),
+				vm.getTaskName(), vm.getLimitDate(),
 				vm.getSelectedStatus().getValue().getStatusId());
 		vm.setUpdateDate(longToDateTime(updateEntity.getUpdateDate()));
 	}

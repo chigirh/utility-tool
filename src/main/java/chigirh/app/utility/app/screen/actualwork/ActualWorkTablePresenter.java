@@ -1,18 +1,12 @@
 package chigirh.app.utility.app.screen.actualwork;
 
-import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -28,21 +22,17 @@ import chigirh.app.utility.javafx.component.TextTableColumn;
 import chigirh.app.utility.javafx.component.UtlTableCell;
 import chigirh.app.utility.javafx.component.actualwork.ActualWorkTableRow;
 import chigirh.app.utility.javafx.component.actualwork.ActualWorkTableRowObject;
-import chigirh.app.utility.javafx.presenter.PresenterBase;
-import javafx.fxml.FXML;
+import chigirh.app.utility.javafx.presenter.TablePresenterBase;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import lombok.RequiredArgsConstructor;
 
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
 @Component
 @RequiredArgsConstructor
-public class ActualWorkTablePresenter extends PresenterBase {
-
-	private static final String STYLE_CLASS = ".table";
+public class ActualWorkTablePresenter
+		extends TablePresenterBase<ActualWorkEntity, ActualWorkRow, ActualWorkTableRow, ActualWorkTableRowObject> {
 
 	private static final int ROW_COUNT = 10;
 
@@ -52,43 +42,13 @@ public class ActualWorkTablePresenter extends PresenterBase {
 
 	final ActualWorkService actualWorkService;
 
-	@FXML
-	private VBox table;
-
-	@FXML
-	private HBox header;
-
-	@FXML
-	private VBox body;
-
 	private ActualWorkGroupEntity windowParam = null;
 
-	private List<TableColumn<ActualWorkRow, ?, ?>> awColumns;
-
 	private List<TableColumn<ActualWorkTaskRow, ?, ?>> awTaskColumns;
-
-	private final List<ActualWorkTableRow> tableRows = new ArrayList<>();
 
 	private final Map<String, ActualWorkRow> awRowMap = new HashMap<>();
 
 	private final Map<String, ActualWorkTaskRow> awTaskRowMap = new HashMap<>();
-
-	/** 現在見えているTableRowObjectの先頭 */
-	private ActualWorkTableRowObject head = null;
-
-	/** 現在見えているTableRowObjectの最後 */
-	private ActualWorkTableRowObject tail = null;
-
-	/** 全てのTableRowObjectの先頭 */
-	private ActualWorkTableRowObject first = null;
-
-	/** 全てのTableRowObjectの最後 */
-	private ActualWorkTableRowObject last = null;
-
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		table.getStyleClass().add(STYLE_CLASS);
-	}
 
 	@Override
 	public void setPatameter(Object windowParam) {
@@ -117,7 +77,8 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		body.getChildren().addAll(tableRows);
 	}
 
-	private void clumnDefinition() {
+	@Override
+	protected void clumnDefinition() {
 		CheckTableColumn<ActualWorkRow> parentCol1 = new CheckTableColumn<>();
 		parentCol1.setOrder(1);
 		parentCol1.setColumnName("");
@@ -140,7 +101,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		parentCol3.setWidth(50);
 		parentCol3.setPropertyFactory(ActualWorkRow::actualWorkTimeProperty);
 
-		awColumns = Arrays.asList(parentCol1, parentCol2, parentCol3);
+		columns = Arrays.asList(parentCol1, parentCol2, parentCol3);
 
 		CheckTableColumn<ActualWorkTaskRow> childCol1 = new CheckTableColumn<>();
 		childCol1.setOrder(1);
@@ -181,30 +142,11 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		awTaskColumns = Arrays.asList(childCol1, childCol2, childCol3, childCol4, childCol5);
 	}
 
-	private String longToDate(Long longDate) {
-		if (longDate == null) {
-			return StringUtils.EMPTY;
-		}
-		Date date = new Date(longDate);
-
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		return sdf.format(date);
-	}
-
 	public Node createHeaderCell(TableColumn<ActualWorkTaskRow, ?, ?> def) {
 		Label cell = new Label();
 		cell.setText(def.getColumnName());
 		cell.setPrefWidth(def.getWidth());
 		return cell;
-	}
-
-	public void update() {
-		List<ActualWorkEntity> awAll = actualWorkService.awGet(windowParam.getAwGroupId());
-		first = null;
-		last = null;
-		awAll.stream().forEach(this::createParentRowObject);
-		head = first;
-		redraw();
 	}
 
 	public void delete() {
@@ -226,6 +168,7 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		return true;
 	}
 
+	@Override
 	public void redraw() {
 		tableRows.forEach(ActualWorkTableRow::clear);
 		if (head == null) {
@@ -251,20 +194,12 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		}
 	}
 
-	private void createParentRowObject(ActualWorkEntity entity) {
-		ActualWorkTableRowObject tableRowObject = new ActualWorkTableRowObject(RowType.PARENT);
+	@Override
+	protected void createRow(ActualWorkEntity entity) {
 
-		ActualWorkRow vm = new ActualWorkRow(entity.getAwId());
-		vm.setActualWorkDate(longToDate(entity.getAwDate()));
-		vm.setActualWorkTime(String
-				.valueOf(actualWorkService.awTaskGet(entity.getAwId()).stream()
-						.mapToDouble(ActualWorkTaskEntity::getTaskTime).sum()));
-		awRowMap.put(vm.getKey(), vm);
+		ActualWorkRow vm = createVm(entity);
+		ActualWorkTableRowObject tableRowObject = createRowObject(entity, vm);
 
-		tableRowObject.setRowFactory(() -> createParentRow(entity, tableRowObject, vm));
-		tableRowObject.setExpanted(false);
-		tableRowObject.setVisible(true);
-		tableRowObject.setDisplay(false);
 		if (last == null) {
 			first = tableRowObject;
 			last = tableRowObject;
@@ -280,10 +215,15 @@ public class ActualWorkTablePresenter extends PresenterBase {
 						.collect(Collectors.toList()));
 	}
 
-	private HBox createParentRow(ActualWorkEntity entity, ActualWorkTableRowObject parent, ActualWorkRow vm) {
+	protected HBox createRow(ActualWorkEntity entity, ActualWorkTaskRow vm) {
+		//使用しないので空実装で潰す
+		return null;
+	}
+
+	private HBox createRow(ActualWorkEntity entity, ActualWorkTableRowObject parent, ActualWorkRow vm) {
 		HBox row = new HBox();
 		row.getChildren()
-				.addAll(awColumns.stream().map(e -> createTableCell(e, entity, vm)).collect(Collectors.toList()));
+				.addAll(columns.stream().map(e -> createCell(e, entity, vm)).collect(Collectors.toList()));
 
 		parent.setAddTask(() -> addTask(parent, vm));
 
@@ -300,7 +240,8 @@ public class ActualWorkTablePresenter extends PresenterBase {
 		redraw();
 	}
 
-	private UtlTableCell<?, ?> createTableCell(TableColumn<ActualWorkRow, ?, ?> columnDef,
+	@Override
+	protected UtlTableCell<?, ?> createCell(TableColumn<ActualWorkRow, ?, ?> columnDef,
 			ActualWorkEntity entity, ActualWorkRow vm) {
 		UtlTableCell<?, ?> cell = columnDef.cellCreate(vm);
 
@@ -375,64 +316,29 @@ public class ActualWorkTablePresenter extends PresenterBase {
 
 	}
 
-	/*
-	 * スクロール処理ここから
-	 */
-
-	private void onScroll(ScrollEvent e) {
-
-		if (head == null) {
-			return;
-		}
-
-		double deltaY = e.getDeltaY();
-
-		if (deltaY < 0) {
-			scrollDown();
-		}
-		if (0 < deltaY) {
-			scrollUp();
-		}
-
-		redraw();
-
+	@Override
+	protected List<ActualWorkEntity> getEntity() {
+		return actualWorkService.awGet(windowParam.getAwGroupId());
 	}
 
-	private void scrollUp() {
-
-		ActualWorkTableRowObject sequence = head.prev();
-
-		while (sequence != null) {
-			if (sequence.isVisible()) {
-				head = sequence;
-				break;
-			}
-			sequence = sequence.prev();
-		}
+	@Override
+	protected ActualWorkTableRowObject createRowObject(ActualWorkEntity entity, ActualWorkRow vm) {
+		ActualWorkTableRowObject tableRowObject = new ActualWorkTableRowObject(RowType.PARENT);
+		tableRowObject.setRowFactory(() -> createRow(entity, tableRowObject, vm));
+		tableRowObject.setExpanted(false);
+		tableRowObject.setVisible(true);
+		tableRowObject.setDisplay(false);
+		return tableRowObject;
 	}
 
-	private void scrollDown() {
-
-		ActualWorkTableRowObject tailSequence = tail.next();
-
-		while (tailSequence != null) {
-			if (tailSequence.isVisible()) {
-				ActualWorkTableRowObject headSequence = head.next();
-				while (headSequence != null) {
-					if (headSequence.isVisible()) {
-						head = headSequence;
-						break;
-					}
-					headSequence = headSequence.next();
-				}
-				break;
-			}
-			tailSequence = tailSequence.prev();
-		}
+	@Override
+	protected ActualWorkRow createVm(ActualWorkEntity entity) {
+		ActualWorkRow vm = new ActualWorkRow(entity.getAwId());
+		vm.setActualWorkDate(longToDate(entity.getAwDate()));
+		vm.setActualWorkTime(String
+				.valueOf(actualWorkService.awTaskGet(entity.getAwId()).stream()
+						.mapToDouble(ActualWorkTaskEntity::getTaskTime).sum()));
+		awRowMap.put(vm.getKey(), vm);
+		return vm;
 	}
-
-	/*
-	 * スクロール処理ここまで
-	 */
-
 }
