@@ -79,8 +79,6 @@ public class ActualWorkPresenter extends PresenterBase {
 
 	@FXML
 	public void onAwAdd(ActionEvent e) throws ParseException{
-
-
 		if(!JavaFxTextFieldUtils.inputCheck(awAddTf, AW_DATE_PAT)) {
 			return;
 		}

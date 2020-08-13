@@ -6,7 +6,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 
-public abstract class TableRow<E extends TableRowObject<?>> extends AnchorPane {
+public abstract class TableRow<E extends TableRowObject<?,?>> extends AnchorPane {
 
 	public static enum RowType {
 		EMPTY, NORMAL, PARENT, CHILD;
