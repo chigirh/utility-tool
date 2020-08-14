@@ -39,9 +39,21 @@
 }
 
 .content,
-.viewport,
-.tab-pane,
+.viewport{
+	-fx-background-color:-fx-color-base-bg;
+}
+
 .tab{
+	-fx-background-color:-fx-color-tf-bg;
+	-fx-text-fill:-fx-cloor-tf-fg;
+}
+
+.tab:selected{
+	-fx-background-color:-fx-color-tf-edit-bg;
+	-fx-text-fill:-fx-color-tf-edit-fg
+}
+
+.tab-pane > .tab-header-area > .tab-header-background {
 	-fx-background-color:-fx-color-base-bg;
 }
 

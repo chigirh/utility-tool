@@ -62,6 +62,8 @@ public class ActualWorkIndexPresenter extends PresenterBase {
 	 * 登録タブ
 	 */
 	@FXML
+	private ScrollPane classifcationScroll;
+	@FXML
 	private UtlTextField classification1AddTf;
 	@FXML
 	private UtlTextField classification2AddTf;
@@ -83,6 +85,7 @@ public class ActualWorkIndexPresenter extends PresenterBase {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		awScroll.setHbarPolicy(ScrollBarPolicy.NEVER);
+		classifcationScroll.setHbarPolicy(ScrollBarPolicy.NEVER);
 
 		JavaFxBindingUtils.bindingNode(classification1AddTf, vm.classifcation1AddProperty());
 		JavaFxBindingUtils.bindingNode(classification1AddCb,
