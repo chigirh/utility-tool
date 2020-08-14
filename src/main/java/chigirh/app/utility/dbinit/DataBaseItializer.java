@@ -157,31 +157,30 @@ public class DataBaseItializer {
 		isCreate = issuer.createTable(task);
 		LOGGER.info("result:{}", isCreate ? "SUCCESS!!" : "EXEITS");
 
+		TaskStatusEntity taskStatusEntity = new TaskStatusEntity();
+		taskStatusEntity.setStatusId("0");
+		taskStatusEntity.setStatus("未着手");
+		taskStatusMapper.saveAndFlush(taskStatusEntity);
 
-			TaskStatusEntity taskStatusEntity = new TaskStatusEntity();
-			taskStatusEntity.setStatusId("0");
-			taskStatusEntity.setStatus("未着手");
-			taskStatusMapper.saveAndFlush(taskStatusEntity);
+		taskStatusEntity.setStatusId("1");
+		taskStatusEntity.setStatus("着手中");
+		taskStatusMapper.saveAndFlush(taskStatusEntity);
 
-			taskStatusEntity.setStatusId("1");
-			taskStatusEntity.setStatus("着手中");
-			taskStatusMapper.saveAndFlush(taskStatusEntity);
+		taskStatusEntity.setStatusId("2");
+		taskStatusEntity.setStatus("Rv中");
+		taskStatusMapper.saveAndFlush(taskStatusEntity);
 
-			taskStatusEntity.setStatusId("2");
-			taskStatusEntity.setStatus("Rv中");
-			taskStatusMapper.saveAndFlush(taskStatusEntity);
+		taskStatusEntity.setStatusId("3");
+		taskStatusEntity.setStatus("完了");
+		taskStatusMapper.saveAndFlush(taskStatusEntity);
 
-			taskStatusEntity.setStatusId("3");
-			taskStatusEntity.setStatus("完了");
-			taskStatusMapper.saveAndFlush(taskStatusEntity);
+		taskStatusEntity.setStatusId("4");
+		taskStatusEntity.setStatus("保留");
+		taskStatusMapper.saveAndFlush(taskStatusEntity);
 
-			taskStatusEntity.setStatusId("4");
-			taskStatusEntity.setStatus("保留");
-			taskStatusMapper.saveAndFlush(taskStatusEntity);
-
-			taskStatusEntity.setStatusId("5");
-			taskStatusEntity.setStatus("欠番");
-			taskStatusMapper.saveAndFlush(taskStatusEntity);
+		taskStatusEntity.setStatusId("5");
+		taskStatusEntity.setStatus("欠番");
+		taskStatusMapper.saveAndFlush(taskStatusEntity);
 
 		LOGGER.info("Transaction table Initialize end ...");
 

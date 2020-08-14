@@ -325,7 +325,8 @@ public class ActualWorkTablePresenter
 
 	@Override
 	protected List<ActualWorkEntity> getEntity() {
-		return actualWorkService.awGet(windowParam.getAwGroupId());
+		return actualWorkService.awGet(windowParam.getAwGroupId()).stream()
+				.sorted((c1, c2) -> c1.getAwDate().compareTo(c2.getAwDate())).collect(Collectors.toList());
 	}
 
 	@Override
