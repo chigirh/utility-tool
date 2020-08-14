@@ -45,6 +45,19 @@ public class TaskManagerTableRowObject extends TableRowObject<TaskManagerTableRo
 		tableRowProperty.get().pseudoClassStateChanged(PseudoClassConstans.HOLD, false);
 		tableRowProperty.get().pseudoClassStateChanged(PseudoClassConstans.UN, false);
 
+		if ("3".equals(vm.getSelectedStatus().getValue().getStatusId())) {
+			tableRowProperty.get().pseudoClassStateChanged(PseudoClassConstans.COMPLETE, true);
+			return;
+		}
+		if ("4".equals(vm.getSelectedStatus().getValue().getStatusId())) {
+			tableRowProperty.get().pseudoClassStateChanged(PseudoClassConstans.HOLD, true);
+			return;
+		}
+		if ("5".equals(vm.getSelectedStatus().getValue().getStatusId())) {
+			tableRowProperty.get().pseudoClassStateChanged(PseudoClassConstans.UN, true);
+			return;
+		}
+
 		//期限チェック
 		String toDay = DateFormatUtils.format(new Date(), "yyyy-MM-dd");
 		try {
@@ -64,15 +77,6 @@ public class TaskManagerTableRowObject extends TableRowObject<TaskManagerTableRo
 		}
 		if ("2".equals(vm.getSelectedStatus().getValue().getStatusId())) {
 			tableRowProperty.get().pseudoClassStateChanged(PseudoClassConstans.RV, true);
-		}
-		if ("3".equals(vm.getSelectedStatus().getValue().getStatusId())) {
-			tableRowProperty.get().pseudoClassStateChanged(PseudoClassConstans.COMPLETE, true);
-		}
-		if ("4".equals(vm.getSelectedStatus().getValue().getStatusId())) {
-			tableRowProperty.get().pseudoClassStateChanged(PseudoClassConstans.HOLD, true);
-		}
-		if ("5".equals(vm.getSelectedStatus().getValue().getStatusId())) {
-			tableRowProperty.get().pseudoClassStateChanged(PseudoClassConstans.UN, true);
 		}
 	}
 

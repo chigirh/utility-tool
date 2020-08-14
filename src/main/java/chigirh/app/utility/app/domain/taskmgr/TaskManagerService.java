@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import chigirh.app.utility.app.mapper.taskmgr.TaskGroupMapper;
@@ -66,6 +67,9 @@ public class TaskManagerService {
 		entity.setUpdateDate(nowTime.getTime());
 		entity.setStatusId("0");
 		try {
+			if(StringUtils.isEmpty(limitDate)) {
+				entity.setLimitDate(new Date().getTime());
+			}
 			if (isDateFormatTime(limitDate)) {
 				entity.setLimitDate(SDF_TIME.parse(limitDate).getTime());
 			}
