@@ -1,6 +1,7 @@
 package chigirh.app.utility.app.screen.actualwork;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -11,14 +12,19 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import chigirh.app.utility.app.domain.actualwork.ActualWorkClassifcation1Entity;
+import chigirh.app.utility.app.domain.actualwork.ActualWorkClassifcation2Entity;
+import chigirh.app.utility.app.domain.actualwork.ActualWorkClassifcationService;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkGroupEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkService;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkTaskEntity;
 import chigirh.app.utility.javafx.component.CheckTableColumn;
+import chigirh.app.utility.javafx.component.ChoiceTableColumn;
 import chigirh.app.utility.javafx.component.TableColumn;
 import chigirh.app.utility.javafx.component.TableRow.RowType;
 import chigirh.app.utility.javafx.component.TextTableColumn;
+import chigirh.app.utility.javafx.component.UtlLabelValueBean;
 import chigirh.app.utility.javafx.component.UtlTableCell;
 import chigirh.app.utility.javafx.component.actualwork.ActualWorkTableRow;
 import chigirh.app.utility.javafx.component.actualwork.ActualWorkTableRowObject;
@@ -41,6 +47,8 @@ public class ActualWorkTablePresenter
 	private static final String AW_TIME_PAT = "^[0-9].[0-9]{1,2}$";
 
 	final ActualWorkService actualWorkService;
+
+	final ActualWorkClassifcationService classifcationService;
 
 	private ActualWorkGroupEntity windowParam = null;
 
@@ -90,7 +98,7 @@ public class ActualWorkTablePresenter
 		parentCol2.setOrder(2);
 		parentCol2.setColumnName("");
 		parentCol2.setEditable(true);
-		parentCol2.setWidth(300);
+		parentCol2.setWidth(120);
 		parentCol2.setPropertyFactory(ActualWorkRow::actualWorkDateProperty);
 		parentCol2.setValidator(AW_DATE_PAT);
 
@@ -110,19 +118,19 @@ public class ActualWorkTablePresenter
 		childCol1.setWidth(20);
 		childCol1.setPropertyFactory(ActualWorkTaskRow::isDeleteCheckedProperty);
 
-		TextTableColumn<ActualWorkTaskRow> childCol2 = new TextTableColumn<>();
+		ChoiceTableColumn<ActualWorkTaskRow, ActualWorkClassifcation1Entity> childCol2 = new ChoiceTableColumn<>();
 		childCol2.setOrder(2);
 		childCol2.setColumnName("分類1");
-		childCol2.setEditable(false);
-		childCol2.setWidth(65);
-		childCol2.setPropertyFactory(ActualWorkTaskRow::classification1Property);
+		childCol2.setWidth(100);
+		childCol2.setPropertyFactory(ActualWorkTaskRow::selectedClassification1Property);
+		childCol2.setItemPropertyFactory(ActualWorkTaskRow::classification1ListPropery);
 
-		TextTableColumn<ActualWorkTaskRow> childCol3 = new TextTableColumn<>();
+		ChoiceTableColumn<ActualWorkTaskRow, ActualWorkClassifcation2Entity> childCol3 = new ChoiceTableColumn<>();
 		childCol3.setOrder(3);
 		childCol3.setColumnName("分類2");
-		childCol3.setEditable(false);
-		childCol3.setWidth(65);
-		childCol3.setPropertyFactory(ActualWorkTaskRow::classification2Property);
+		childCol3.setWidth(100);
+		childCol3.setPropertyFactory(ActualWorkTaskRow::selectedClassification2Property);
+		childCol3.setItemPropertyFactory(ActualWorkTaskRow::classification2ListPropery);
 
 		TextTableColumn<ActualWorkTaskRow> childCol4 = new TextTableColumn<>();
 		childCol4.setOrder(4);
@@ -261,11 +269,7 @@ public class ActualWorkTablePresenter
 	public ActualWorkTableRowObject createChildRowObject(ActualWorkTaskEntity entity, ActualWorkTableRowObject paret,
 			ActualWorkRow pVm) {
 		ActualWorkTableRowObject tableRowObject = new ActualWorkTableRowObject(RowType.CHILD);
-		ActualWorkTaskRow cVm = new ActualWorkTaskRow(entity.getAwId(), String.valueOf(entity.getSerial()));
-		cVm.setTaskName(entity.getTaskName());
-		cVm.setClassification1("");
-		cVm.setClassification2("");
-		cVm.setTaskTime(String.valueOf(entity.getTaskTime()));
+		ActualWorkTaskRow cVm = createVm(entity);
 		awTaskRowMap.put(cVm.getKey(), cVm);
 
 		paret.getChildren().add(tableRowObject);
@@ -307,12 +311,15 @@ public class ActualWorkTablePresenter
 
 	private void awTaskUpdate(ActualWorkTaskEntity entity, ActualWorkTaskRow vm) {
 
-		actualWorkService.awTaskUpdate(entity, vm.getTaskName(), vm.getTaskTime());
+		actualWorkService.awTaskUpdate(entity, //
+				vm.getSelectedClassification1() == null ? null : vm.getSelectedClassification1().getValue().getId(), //
+				vm.getSelectedClassification2() == null ? null : vm.getSelectedClassification2().getValue().getId(), //
+				vm.getTaskName(), vm.getTaskTime());
 
 		final String awId = vm.getActualWorkId();
 
-		ActualWorkRow parentRow = awRowMap.get(awId);
-		parentRow.setActualWorkTime(String.valueOf(actualWorkService.awTaskTimeSumGet(awId)));
+		ActualWorkRow pVm = awRowMap.get(awId);
+		pVm.setActualWorkTime(String.valueOf(actualWorkService.awTaskTimeSumGet(awId)));
 
 	}
 
@@ -340,5 +347,48 @@ public class ActualWorkTablePresenter
 						.mapToDouble(ActualWorkTaskEntity::getTaskTime).sum()));
 		awRowMap.put(vm.getKey(), vm);
 		return vm;
+	}
+
+	protected ActualWorkTaskRow createVm(ActualWorkTaskEntity entity) {
+		ActualWorkTaskRow vm = new ActualWorkTaskRow(entity.getAwId(), String.valueOf(entity.getSerial()));
+
+		vm.setTaskName(entity.getTaskName());
+
+		vm.setClassification1PropertyList(classifcationService.classifcation1Get().stream()
+				.map(this::classifcation1BeanMappr).collect(Collectors.toList()));
+		vm.setSelectedClassification1(
+				classifcation1BeanMappr(classifcationService.classifcation1Get(entity.getClassification1())));
+
+		setClassification2ListUpdate(vm);
+		vm.setSelectedClassification2(
+				classifcation2BeanMappr(classifcationService.classifcation2Get(entity.getClassification2())));
+
+		vm.setTaskTime(String.valueOf(entity.getTaskTime()));
+
+		vm.selectedClassification1Property().addListener((ob, ov, nv) -> setClassification2ListUpdate(vm));
+
+		return vm;
+	}
+
+	private void setClassification2ListUpdate(ActualWorkTaskRow vm) {
+		vm.setSelectedClassification2(null);
+		if (vm.getSelectedClassification1() == null) {
+			vm.setClassification2PropertyList(new ArrayList<>());
+			return;
+		}
+
+		vm.setClassification2PropertyList(
+				classifcationService.findByclassifcation1(vm.getSelectedClassification1().getValue().getId())
+						.stream().map(this::classifcation2BeanMappr).collect(Collectors.toList()));
+	}
+
+	private UtlLabelValueBean<ActualWorkClassifcation1Entity> classifcation1BeanMappr(
+			ActualWorkClassifcation1Entity entity) {
+		return entity == null ? null : new UtlLabelValueBean<>(entity.getName(), entity);
+	}
+
+	private UtlLabelValueBean<ActualWorkClassifcation2Entity> classifcation2BeanMappr(
+			ActualWorkClassifcation2Entity entity) {
+		return entity == null ? null : new UtlLabelValueBean<>(entity.getName(), entity);
 	}
 }

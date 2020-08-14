@@ -16,11 +16,11 @@ public class RowAutoCreater {
 	public static void main(String[] args) {
 
 		//		actualWorkRow();
-		//		actualWorkTaskRow();
+//				actualWorkTaskRow();
 
 		//				taskRow();
 
-//				awIndexVm();
+		//				awIndexVm();
 
 	}
 
@@ -47,8 +47,10 @@ public class RowAutoCreater {
 				.keyType("String")//
 				.key(Col.builder().name("actualWorkId").type("String").build())//
 				.key(Col.builder().name("serial").type("String").build())//
-				.col(Col.builder().name("classification1").type("String").build())//
-				.col(Col.builder().name("classification2").type("String").build())//
+				.col(Col.builder().name("classification1").type("ActualWorkClassifcation1Entity").isCheeckBox(true)
+						.build())//
+				.col(Col.builder().name("classification2").type("ActualWorkClassifcation2Entity").isCheeckBox(true)
+						.build())//
 				.col(Col.builder().name("taskName").type("String").build())//
 				.col(Col.builder().name("taskTime").type("String").build())//
 				.col(Col.builder().name("isDeleteChecked").type("Boolean").build())//
@@ -85,9 +87,11 @@ public class RowAutoCreater {
 				.col(Col.builder().name("classifcation1Disp").type("ActualWorkClassifcation1Entity").isCheeckBox(true)
 						.build())//
 				.col(Col.builder().name("classifcation2Add").type("String").build())//
-				.col(Col.builder().name("classifcation1RemoveCb").type("ActualWorkClassifcation1Entity").isCheeckBox(true)
+				.col(Col.builder().name("classifcation1RemoveCb").type("ActualWorkClassifcation1Entity")
+						.isCheeckBox(true)
 						.build())//
-				.col(Col.builder().name("classifcation2RemoveCb").type("ActualWorkClassifcation2Entity").isCheeckBox(true)
+				.col(Col.builder().name("classifcation2RemoveCb").type("ActualWorkClassifcation2Entity")
+						.isCheeckBox(true)
 						.build())//
 				.build();
 

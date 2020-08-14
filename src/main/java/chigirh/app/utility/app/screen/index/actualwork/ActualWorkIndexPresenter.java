@@ -1,6 +1,8 @@
 package chigirh.app.utility.app.screen.index.actualwork;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -179,18 +181,28 @@ public class ActualWorkIndexPresenter extends PresenterBase {
 		ActualWorkClassifcation2Entity addEntity = classifcationService
 				.classifcation2Add(vm.getSelectedClassifcation1Disp().getValue().getId(), vm.getClassifcation2Add());
 		vm.setClassifcation2Add("");
-		if (StringUtils.equals(vm.getSelectedClassifcation1Disp().getValue().getId(),
-				vm.getSelectedClassifcation1RemoveCb().getValue().getId())) {
+		if (Objects.equals(vm.getSelectedClassifcation1Disp(),
+				vm.getSelectedClassifcation1RemoveCb())) {
 			vm.classifcation2RemoveCbListPropery().get().add(classifcation2BeanMappr(addEntity));
 		}
 	}
 
 	@FXML
 	public void onClassification1RemoveAction(ActionEvent e) {
+		classifcationService.classifcation1Delete(vm.getSelectedClassifcation1RemoveCb().getValue().getId());
+		vm.setSelectedClassifcation1RemoveCb(null);
+		vm.setClassifcation1DispPropertyList(classifcationService.classifcation1Get().stream()
+				.map(this::classifcation1BeanMappr).collect(Collectors.toList()));
+		vm.setSelectedClassifcation2RemoveCb(null);
+		vm.setClassifcation2RemoveCbPropertyList(new ArrayList<>());
+
 	}
 
 	@FXML
 	public void onClassification2RemoveAction(ActionEvent e) {
+		classifcationService.classifcation2Delete(vm.getSelectedClassifcation2RemoveCb().getValue().getId());
+		vm.setSelectedClassifcation2RemoveCb(null);
+		selectedRemoveClassifcation1Change(null, null, vm.getSelectedClassifcation1RemoveCb());
 	}
 
 	private UtlLabelValueBean<ActualWorkClassifcation1Entity> classifcation1BeanMappr(

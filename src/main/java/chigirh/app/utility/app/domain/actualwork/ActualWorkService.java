@@ -88,7 +88,10 @@ public class ActualWorkService {
 	}
 
 	@Transactional
-	public void awTaskUpdate(ActualWorkTaskEntity entity, String taskName, String taskTime) {
+	public void awTaskUpdate(ActualWorkTaskEntity entity, final String classifcation1Id, final String classifcation2Id,
+			String taskName, String taskTime) {
+		entity.setClassification1(classifcation1Id);
+		entity.setClassification2(classifcation2Id);
 		entity.setTaskName(taskName);
 		entity.setTaskTime(Double.parseDouble(taskTime));
 		actualWorkTaskMapper.saveAndFlush(entity);
