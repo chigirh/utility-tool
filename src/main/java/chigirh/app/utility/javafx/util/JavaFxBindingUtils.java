@@ -1,11 +1,11 @@
 package chigirh.app.utility.javafx.util;
 
-import chigirh.app.utility.javafx.component.CheckTableCell;
-import chigirh.app.utility.javafx.component.ChoiceTableCell;
-import chigirh.app.utility.javafx.component.TextTableCell;
 import chigirh.app.utility.javafx.component.UtlChoiceBox;
 import chigirh.app.utility.javafx.component.UtlLabelValueBean;
 import chigirh.app.utility.javafx.component.UtlTextField;
+import chigirh.app.utility.javafx.component.table.CheckTableCell;
+import chigirh.app.utility.javafx.component.table.ChoiceTableCell;
+import chigirh.app.utility.javafx.component.table.TextTableCell;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;

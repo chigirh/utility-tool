@@ -19,17 +19,16 @@ import chigirh.app.utility.app.domain.actualwork.ActualWorkEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkGroupEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkService;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkTaskEntity;
-import chigirh.app.utility.javafx.component.CheckTableColumn;
-import chigirh.app.utility.javafx.component.ChoiceTableColumn;
-import chigirh.app.utility.javafx.component.TableColumn;
-import chigirh.app.utility.javafx.component.TableRow.RowType;
-import chigirh.app.utility.javafx.component.TextTableColumn;
 import chigirh.app.utility.javafx.component.UtlLabelValueBean;
-import chigirh.app.utility.javafx.component.UtlTableCell;
 import chigirh.app.utility.javafx.component.actualwork.ActualWorkTableRow;
 import chigirh.app.utility.javafx.component.actualwork.ActualWorkTableRowObject;
+import chigirh.app.utility.javafx.component.table.CheckTableColumn;
+import chigirh.app.utility.javafx.component.table.ChoiceTableColumn;
+import chigirh.app.utility.javafx.component.table.TableCell;
+import chigirh.app.utility.javafx.component.table.TableColumn;
+import chigirh.app.utility.javafx.component.table.TableRow.RowType;
+import chigirh.app.utility.javafx.component.table.TextTableColumn;
 import chigirh.app.utility.javafx.presenter.TablePresenterBase;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import lombok.RequiredArgsConstructor;
@@ -67,22 +66,8 @@ public class ActualWorkTablePresenter
 
 	@Override
 	public void onStart() {
-
-		clumnDefinition();
-
-		table.setOnScroll(this::onScroll);
-
-		Label headerLeftLabel = new Label("");
-		headerLeftLabel.setPrefWidth(30.0);
-		header.getChildren().add(headerLeftLabel);
-		header.getChildren().addAll(awTaskColumns.stream().map(this::createHeaderCell).collect(Collectors.toList()));
-
-		for (int i = 0; i < ROW_COUNT; i++) {
-			ActualWorkTableRow tableRow = new ActualWorkTableRow(this::redraw);
-			tableRows.add(tableRow);
-		}
-
-		body.getChildren().addAll(tableRows);
+		super.onStart();
+		update();
 	}
 
 	@Override
@@ -150,13 +135,37 @@ public class ActualWorkTablePresenter
 		awTaskColumns = Arrays.asList(childCol1, childCol2, childCol3, childCol4, childCol5);
 	}
 
-	public Node createHeaderCell(TableColumn<ActualWorkTaskRow, ?, ?> def) {
-		Label cell = new Label();
+	@Override
+	protected void createHeaderBefore() {
+		Label headerLeftLabel = new Label("");
+		headerLeftLabel.setPrefWidth(30.0);
+		header.getChildren().add(headerLeftLabel);
+	}
+
+	@Override
+	protected void createHeader() {
+		header.getChildren()
+				.addAll(awTaskColumns.stream().map(this::createHeaderCellAwTask).collect(Collectors.toList()));
+	}
+
+	private TableHeaderCell createHeaderCellAwTask(TableColumn<ActualWorkTaskRow, ?, ?> def) {
+		TableHeaderCell cell = new TableHeaderCell();
 		cell.setText(def.getColumnName());
 		cell.setPrefWidth(def.getWidth());
 		return cell;
 	}
 
+	@Override
+	protected int getRowCount() {
+		return 20;
+	}
+
+	@Override
+	protected ActualWorkTableRow getRow() {
+		return new ActualWorkTableRow(this::redraw);
+	}
+
+	@Override
 	public void delete() {
 
 		awRowMap.values().stream()//
@@ -167,6 +176,7 @@ public class ActualWorkTablePresenter
 
 		update();
 	}
+
 
 	private boolean judgeAndDelete(ActualWorkRow row) {
 		if (row.getIsDeleteChecked()) {
@@ -179,10 +189,10 @@ public class ActualWorkTablePresenter
 	@Override
 	public void redraw() {
 		tableRows.forEach(ActualWorkTableRow::clear);
-		if (head == null) {
+		if (first == null) {
 			return;
 		}
-		ActualWorkTableRowObject sequence = head;
+		ActualWorkTableRowObject sequence = first;
 
 		for (ActualWorkTableRow tableRow : tableRows) {
 
@@ -190,7 +200,7 @@ public class ActualWorkTablePresenter
 				if (sequence.isVisible()) {
 					tableRow.set(sequence);
 					sequence.setDisplay(true);
-					tail = sequence;
+					last = sequence;
 					sequence = sequence.next();
 					break;
 				}
@@ -208,13 +218,13 @@ public class ActualWorkTablePresenter
 		ActualWorkRow vm = createVm(entity);
 		ActualWorkTableRowObject tableRowObject = createRowObject(entity, vm);
 
-		if (last == null) {
-			first = tableRowObject;
-			last = tableRowObject;
+		if (tail == null) {
+			head = tableRowObject;
+			tail = tableRowObject;
 		} else {
-			tableRowObject.setPrev(last);
-			last.setNext(tableRowObject);
-			last = tableRowObject;
+			tableRowObject.setPrev(tail);
+			tail.setNext(tableRowObject);
+			tail = tableRowObject;
 		}
 
 		tableRowObject.getChildren()
@@ -249,9 +259,9 @@ public class ActualWorkTablePresenter
 	}
 
 	@Override
-	protected UtlTableCell<?, ?> createCell(TableColumn<ActualWorkRow, ?, ?> columnDef,
+	protected TableCell<?, ?> createCell(TableColumn<ActualWorkRow, ?, ?> columnDef,
 			ActualWorkEntity entity, ActualWorkRow vm) {
-		UtlTableCell<?, ?> cell = columnDef.cellCreate(vm);
+		TableCell<?, ?> cell = columnDef.cellCreate(vm);
 
 		cell.change(() -> awUpdate(entity, vm));
 
@@ -280,9 +290,9 @@ public class ActualWorkTablePresenter
 		tableRowObject.setVisible(paret.isExpanted());
 		tableRowObject.setDisplay(false);
 		if (paret.isLast()) {
-			tableRowObject.setPrev(last);
-			last.setNext(tableRowObject);
-			last = tableRowObject;
+			tableRowObject.setPrev(tail);
+			tail.setNext(tableRowObject);
+			tail = tableRowObject;
 		} else {
 			tableRowObject.setPrev(paret);
 			tableRowObject.setNext(paret.next());
@@ -300,9 +310,9 @@ public class ActualWorkTablePresenter
 		return row;
 	}
 
-	public UtlTableCell<?, ?> createChildCell(TableColumn<ActualWorkTaskRow, ?, ?> columnDef,
+	public TableCell<?, ?> createChildCell(TableColumn<ActualWorkTaskRow, ?, ?> columnDef,
 			ActualWorkTaskEntity entity, ActualWorkTaskRow vm) {
-		UtlTableCell<?, ?> cell = columnDef.cellCreate(vm);
+		TableCell<?, ?> cell = columnDef.cellCreate(vm);
 
 		cell.change(() -> awTaskUpdate(entity, vm));
 
@@ -392,4 +402,5 @@ public class ActualWorkTablePresenter
 			ActualWorkClassifcation2Entity entity) {
 		return entity == null ? null : new UtlLabelValueBean<>(entity.getName(), entity);
 	}
+
 }

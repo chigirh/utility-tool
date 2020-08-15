@@ -78,10 +78,15 @@ public class TaskManagerPresenter extends PresenterBase {
 		taskManagerService.taskAdd(windowParam.getTaskGroupId(),addTf.getText(), addLimitTf.getText());
 		taskManagerTablePresenter.update();
 
+		addTf.setText("");
+		addLimitTf.setText("");
+
 	}
 
 	@FXML
 	public void onAwDelete(ActionEvent e) throws ParseException{
+		taskManagerTablePresenter.delete();
+		taskManagerTablePresenter.update();
 	}
 
 }

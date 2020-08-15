@@ -1,9 +1,9 @@
-package chigirh.app.utility.javafx.component;
+package chigirh.app.utility.javafx.component.table;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.scene.control.CheckBox;
 
-public class CheckTableCell extends UtlTableCell<CheckBox, BooleanProperty> {
+public class CheckTableCell extends TableCell<CheckBox, BooleanProperty> {
 
 
 	CheckTableCell(boolean isSelected) {

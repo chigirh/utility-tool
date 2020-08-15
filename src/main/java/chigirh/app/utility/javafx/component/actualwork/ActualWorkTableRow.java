@@ -2,8 +2,8 @@ package chigirh.app.utility.javafx.component.actualwork;
 
 
 import chigirh.app.utility.javafx.component.PseudoClassConstans;
-import chigirh.app.utility.javafx.component.TableRow;
-import chigirh.app.utility.javafx.component.TextTableCell;
+import chigirh.app.utility.javafx.component.table.TableRow;
+import chigirh.app.utility.javafx.component.table.TextTableCell;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;

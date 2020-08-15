@@ -1,9 +1,11 @@
-package chigirh.app.utility.javafx.component;
+package chigirh.app.utility.javafx.component.table;
 
+import chigirh.app.utility.javafx.component.UtlChoiceBox;
+import chigirh.app.utility.javafx.component.UtlLabelValueBean;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 
-public class ChoiceTableCell<T> extends UtlTableCell<UtlChoiceBox<T>, ObjectProperty<UtlLabelValueBean<T>>> {
+public class ChoiceTableCell<T> extends TableCell<UtlChoiceBox<T>, ObjectProperty<UtlLabelValueBean<T>>> {
 
 	public ChoiceTableCell() {
 		setCell(new UtlChoiceBox<T>());

@@ -2,7 +2,7 @@
 
 	-fx-font-size:12.0px;
 
-	-fx-color-base-bg:#343434;
+	-fx-color-base-bg:#333631;
 	-fx-cloor-base-fg:#FFFFFF;
 
 	-fx-color-tf-bg:#000b00;
@@ -24,6 +24,8 @@
 	-fx-color-table-fg:#eaeaea;
 	-fx-color-table-dark:#070707;
 	-fx-color-table-right:#828282;
+
+	-fx-color-table-header-bg:#203744;
 
 	-fx-color-error-bg:#fff352;
 	-fx-color-error-fg:#ff0000;
@@ -87,6 +89,10 @@
 
 .table{
 	-fx-background-color:-fx-color-table-bg;
+}
+
+.header-cell{
+	-fx-background-color:-fx-color-table-header-bg;
 }
 
 .utl-table-row{
