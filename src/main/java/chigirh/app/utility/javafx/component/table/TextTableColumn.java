@@ -1,4 +1,4 @@
-package chigirh.app.utility.javafx.component;
+package chigirh.app.utility.javafx.component.table;
 
 import chigirh.app.utility.javafx.util.JavaFxBindingUtils;
 import javafx.beans.property.StringProperty;
@@ -10,7 +10,7 @@ public class TextTableColumn<R extends SimpleTableRow<?>> extends TableColumn<R,
 	private String validator;
 
 	@Override
-	protected UtlTableCell<?, ?> getCell() {
+	protected TableCell<?, ?> getCell() {
 		TextTableCell cell = new TextTableCell(isEditable());
 		cell.setWidth(getWidth());
 		cell.setValidator(validator);
@@ -18,8 +18,7 @@ public class TextTableColumn<R extends SimpleTableRow<?>> extends TableColumn<R,
 	}
 
 	@Override
-	public void binding(UtlTableCell<?, ?> cell, StringProperty prop,R row) {
+	public void binding(TableCell<?, ?> cell, StringProperty prop, R row) {
 		JavaFxBindingUtils.bindingCell((TextTableCell) cell, prop);
 	}
-
 }

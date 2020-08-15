@@ -1,4 +1,4 @@
-package chigirh.app.utility.javafx.component;
+package chigirh.app.utility.javafx.component.table;
 
 public interface SimpleTableRow<K> {
 

@@ -3,7 +3,7 @@ package chigirh.app.utility.app.screen.actualwork;
 import java.util.ArrayList;
 import java.util.List;
 
-import chigirh.app.utility.javafx.component.SimpleTableRow;
+import chigirh.app.utility.javafx.component.table.SimpleTableRow;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;

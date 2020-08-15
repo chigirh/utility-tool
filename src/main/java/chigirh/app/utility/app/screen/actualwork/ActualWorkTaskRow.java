@@ -5,8 +5,8 @@ import java.util.List;
 
 import chigirh.app.utility.app.domain.actualwork.ActualWorkClassifcation1Entity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkClassifcation2Entity;
-import chigirh.app.utility.javafx.component.SimpleTableRow;
 import chigirh.app.utility.javafx.component.UtlLabelValueBean;
+import chigirh.app.utility.javafx.component.table.SimpleTableRow;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;

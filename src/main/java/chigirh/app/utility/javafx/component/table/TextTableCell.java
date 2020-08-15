@@ -1,8 +1,9 @@
-package chigirh.app.utility.javafx.component;
+package chigirh.app.utility.javafx.component.table;
 
+import chigirh.app.utility.javafx.component.UtlTextField;
 import javafx.beans.property.StringProperty;
 
-public class TextTableCell extends UtlTableCell<UtlTextField, StringProperty> {
+public class TextTableCell extends TableCell<UtlTextField, StringProperty> {
 
 	public TextTableCell(boolean isEditable) {
 		this("", isEditable);

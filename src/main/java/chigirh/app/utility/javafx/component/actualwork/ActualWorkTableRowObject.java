@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chigirh.app.utility.app.screen.actualwork.ActualWorkRow;
-import chigirh.app.utility.javafx.component.TableRow.RowType;
-import chigirh.app.utility.javafx.component.TableRowObject;
+import chigirh.app.utility.javafx.component.table.TableRowObject;
+import chigirh.app.utility.javafx.component.table.TableRow.RowType;
 import lombok.Getter;
 import lombok.Setter;
 

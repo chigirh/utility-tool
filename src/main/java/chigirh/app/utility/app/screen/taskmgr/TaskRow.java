@@ -3,8 +3,8 @@ package chigirh.app.utility.app.screen.taskmgr;
 import java.util.List;
 
 import chigirh.app.utility.app.domain.taskmgr.TaskStatusEntity;
-import chigirh.app.utility.javafx.component.SimpleTableRow;
 import chigirh.app.utility.javafx.component.UtlLabelValueBean;
+import chigirh.app.utility.javafx.component.table.SimpleTableRow;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;

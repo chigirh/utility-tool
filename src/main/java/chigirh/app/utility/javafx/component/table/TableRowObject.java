@@ -1,9 +1,8 @@
-package chigirh.app.utility.javafx.component;
+package chigirh.app.utility.javafx.component.table;
 
 import java.util.function.Supplier;
 
-import chigirh.app.utility.app.screen.taskmgr.TaskRow;
-import chigirh.app.utility.javafx.component.TableRow.RowType;
+import chigirh.app.utility.javafx.component.table.TableRow.RowType;
 import javafx.scene.layout.HBox;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,7 @@ import lombok.Setter;
 @Setter
 public abstract class TableRowObject<E extends TableRowObject<E,V>,V extends SimpleTableRow<?>> {
 
-	protected TaskRow vm;
+	protected V vm;
 
 	private HBox hBox;
 

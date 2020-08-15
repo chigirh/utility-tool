@@ -2,9 +2,9 @@ package chigirh.app.utility.javafx.component.taskmgr;
 
 
 import chigirh.app.utility.app.domain.taskmgr.TaskStatusEntity;
-import chigirh.app.utility.javafx.component.TableRow;
-import chigirh.app.utility.javafx.component.TextTableCell;
 import chigirh.app.utility.javafx.component.UtlLabelValueBean;
+import chigirh.app.utility.javafx.component.table.TableRow;
+import chigirh.app.utility.javafx.component.table.TextTableCell;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.HBox;

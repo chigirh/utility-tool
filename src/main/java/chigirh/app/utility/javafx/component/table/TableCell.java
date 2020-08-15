@@ -1,5 +1,6 @@
-package chigirh.app.utility.javafx.component;
+package chigirh.app.utility.javafx.component.table;
 
+import chigirh.app.utility.javafx.component.PseudoClassConstans;
 import javafx.beans.property.ReadOnlyProperty;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -8,14 +9,14 @@ import javafx.scene.control.Control;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 
-public abstract class UtlTableCell<E extends Control, P extends ReadOnlyProperty<?>> extends AnchorPane {
+public abstract class TableCell<E extends Control, P extends ReadOnlyProperty<?>> extends AnchorPane {
 
 	private static final String STYLE_CLASS = "utl-table-cell";
 
 	@Getter
 	protected E cell;
 
-	protected UtlTableCell() {
+	protected TableCell() {
 		getStyleClass().add(STYLE_CLASS);
 	}
 
