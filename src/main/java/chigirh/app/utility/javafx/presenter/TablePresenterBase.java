@@ -255,7 +255,7 @@ public abstract class TablePresenterBase<E, V extends SimpleTableRow<?>, R exten
 				}
 				break;
 			}
-			tailSequence = tailSequence.prev();
+			tailSequence = tailSequence.next();
 		}
 
 	}

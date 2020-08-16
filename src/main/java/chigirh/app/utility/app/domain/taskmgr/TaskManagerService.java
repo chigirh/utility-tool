@@ -67,14 +67,15 @@ public class TaskManagerService {
 		entity.setUpdateDate(nowTime.getTime());
 		entity.setStatusId("0");
 		try {
-			if(StringUtils.isEmpty(limitDate)) {
+			if (StringUtils.isEmpty(limitDate)) {
 				entity.setLimitDate(new Date().getTime());
-			}
-			if (isDateFormatTime(limitDate)) {
-				entity.setLimitDate(SDF_TIME.parse(limitDate).getTime());
-			}
-			if (isDateFormatDate(limitDate)) {
-				entity.setLimitDate(SDF_DATE.parse(limitDate).getTime());
+			} else {
+				if (isDateFormatTime(limitDate)) {
+					entity.setLimitDate(SDF_TIME.parse(limitDate).getTime());
+				}
+				if (isDateFormatDate(limitDate)) {
+					entity.setLimitDate(SDF_DATE.parse(limitDate).getTime());
+				}
 			}
 		} catch (ParseException e) {
 			new RuntimeException(e);

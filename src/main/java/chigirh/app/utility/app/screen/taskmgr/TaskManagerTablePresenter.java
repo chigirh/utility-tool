@@ -214,7 +214,7 @@ public class TaskManagerTablePresenter
 	}
 
 	private void excludeJudge(TaskManagerTableRowObject rowObject) {
-		if ("1".equals(rowObject.getVm().getSelectedStatus().getValue().getStatusId())) {
+		if ("0".equals(rowObject.getVm().getSelectedStatus().getValue().getStatusId())) {
 			rowObject.setVisible(screenVm.getNotYetCb());
 		}
 		if ("1".equals(rowObject.getVm().getSelectedStatus().getValue().getStatusId())) {
