@@ -12,9 +12,9 @@ import chigirh.app.utility.app.domain.actualwork.ActualWorkEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkGroupEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkService;
 import chigirh.app.utility.common.prop.FxmlProperties;
-import chigirh.app.utility.javafx.component.PseudoClassConstans;
 import chigirh.app.utility.javafx.component.UtlTextField;
 import chigirh.app.utility.javafx.presenter.PresenterBase;
+import chigirh.app.utility.javafx.util.JavaFxBindingUtils;
 import chigirh.app.utility.javafx.util.JavaFxTextFieldUtils;
 import chigirh.app.utility.javafx.window.ContentViewAndPresenter;
 import javafx.event.ActionEvent;
@@ -29,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class ActualWorkPresenter extends PresenterBase {
 
 	private static final String AW_DATE_PAT = "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$";
+
+	private ActualWorkViewModel vm = new ActualWorkViewModel();
 
 	@FXML
 	private AnchorPane tableArea;
@@ -61,6 +63,8 @@ public class ActualWorkPresenter extends PresenterBase {
 		ContentViewAndPresenter<ActualWorkTablePresenter> vp = loadContent(tableFxml);
 		actualWorkTablePresenter = vp.getPresenter();
 		tableArea.getChildren().add(vp.getView());
+
+		JavaFxBindingUtils.bindingNode(awAddTf, vm.awAddTfProperty());
 	}
 
 	public  void setPatameter(Object windowParam) {
@@ -83,12 +87,12 @@ public class ActualWorkPresenter extends PresenterBase {
 			return;
 		}
 
-		ActualWorkEntity entity = actualWorkService.awAdd(windowParam.getAwGroupId(),awAddTf.getText(),null);
+		ActualWorkEntity entity = actualWorkService.awAdd(windowParam.getAwGroupId(),vm.getAwAddTf(),null);
 		if(entity == null) {
 			return;
 		}
-		awAddTf.pseudoClassStateChanged(PseudoClassConstans.ERROR, false);
-		awAddTf.setText("");
+
+		vm.setAwAddTf("");
 
 		actualWorkTablePresenter.update();
 	}

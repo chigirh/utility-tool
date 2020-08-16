@@ -1,33 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import chigirh.app.utility.javafx.component.UtlTextField?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="750.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="chigirh.app.utility.app.screen.taskmgr.TaskManagerPresenter">
-   <children>
-      <VBox layoutX="149.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <AnchorPane fx:id="tableArea"/>
-            <AnchorPane>
-               <children>
-                  <HBox prefHeight="29.0" AnchorPane.bottomAnchor="2.0" AnchorPane.topAnchor="2.0">
-                     <children>
-                        <UtlTextField fx:id="addTf" prefHeight="25.0" prefWidth="300.0" />
-                        <AnchorPane prefWidth="10.0" />
-                        <UtlTextField fx:id="addLimitTf" prefHeight="25.0" prefWidth="120.0" />
-                        <AnchorPane prefWidth="10.0" />
-                        <Button fx:id="addBt" mnemonicParsing="false" onAction="#onAwAdd" prefHeight="23.0" prefWidth="90.0" text="新規追加" />
-                        <AnchorPane prefWidth="10.0" />
-                        <Button fx:id="deleteBt" mnemonicParsing="false" onAction="#onAwDelete" prefHeight="23.0" prefWidth="90.0" text="削除" />
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-         </children>
-      </VBox>
-   </children>
+	<children>
+		<VBox layoutX="149.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<AnchorPane>
+					<children>
+						<HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<children>
+								<CheckBox fx:id="notYetCb" mnemonicParsing="false" prefWidth="80.0" text="未着手" />
+								<CheckBox fx:id="duringCb" mnemonicParsing="false" prefWidth="80.0" text="着手中" />
+								<CheckBox fx:id="rvCb" mnemonicParsing="false" prefWidth="80.0" text="Rv中" />
+								<CheckBox fx:id="completeCb" mnemonicParsing="false" prefWidth="80.0" text="完了" />
+								<CheckBox fx:id="holdCb" mnemonicParsing="false" prefWidth="80.0" text="保留" />
+								<CheckBox fx:id="unCb" mnemonicParsing="false" prefWidth="80.0" text="欠番" />
+							</children>
+						</HBox>
+					</children>
+				</AnchorPane>
+				<AnchorPane fx:id="tableArea" />
+				<AnchorPane>
+					<children>
+						<HBox prefHeight="29.0" AnchorPane.bottomAnchor="2.0" AnchorPane.topAnchor="2.0">
+							<children>
+								<UtlTextField fx:id="addTf" prefHeight="25.0" prefWidth="300.0" />
+								<AnchorPane prefWidth="10.0" />
+								<UtlTextField fx:id="addLimitTf" prefHeight="25.0" prefWidth="120.0" />
+								<AnchorPane prefWidth="10.0" />
+								<Button fx:id="addBt" mnemonicParsing="false" onAction="#onAwAdd" prefHeight="23.0" prefWidth="90.0" text="新規追加" />
+								<AnchorPane prefWidth="10.0" />
+								<Button fx:id="deleteBt" mnemonicParsing="false" onAction="#onAwDelete" prefHeight="23.0" prefWidth="90.0" text="削除" />
+							</children>
+						</HBox>
+					</children>
+				</AnchorPane>
+			</children>
+		</VBox>
+	</children>
 </AnchorPane>

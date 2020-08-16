@@ -10,6 +10,7 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
+import javafx.scene.control.CheckBox;
 
 public class JavaFxBindingUtils {
 
@@ -23,6 +24,10 @@ public class JavaFxBindingUtils {
 
 	public static void bindingCell(CheckTableCell cell, BooleanProperty property) {
 		cell.getProperty().bindBidirectional(property);
+	}
+
+	public static void bindingNode(CheckBox node, BooleanProperty property) {
+		node.selectedProperty().bindBidirectional(property);
 	}
 
 	public static <E> void bindingCell(ChoiceTableCell<E> cell, ObjectProperty<UtlLabelValueBean<E>> selectedProperty,

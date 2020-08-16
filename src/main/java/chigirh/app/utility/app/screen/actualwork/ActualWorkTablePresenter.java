@@ -346,6 +346,7 @@ public class ActualWorkTablePresenter
 		tableRowObject.setExpanted(false);
 		tableRowObject.setVisible(true);
 		tableRowObject.setDisplay(false);
+		tableRowObjects.add(tableRowObject);
 		return tableRowObject;
 	}
 

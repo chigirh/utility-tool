@@ -22,6 +22,7 @@ import chigirh.app.utility.javafx.component.table.TextTableColumn;
 import chigirh.app.utility.javafx.component.taskmgr.TaskManagerTableRow;
 import chigirh.app.utility.javafx.component.taskmgr.TaskManagerTableRowObject;
 import chigirh.app.utility.javafx.presenter.TablePresenterBase;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -35,6 +36,8 @@ public class TaskManagerTablePresenter
 
 	private static final String SDF_TIME_PAT = //
 			"^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01]):([0-1][0-9]|2[0-4]):([0-5][0-9]|60)$";
+
+	private TaskManagerViewModel screenVm;
 
 	final TaskManagerService taskManagerService;
 
@@ -56,12 +59,12 @@ public class TaskManagerTablePresenter
 	@Override
 	public void delete() {
 		tableRowObjects.stream().map(TaskManagerTableRowObject::getVm).filter(TaskRow::getIsDeleteChecked)
-				.forEach(e ->taskManagerService.taskDelete(e.getTaskId()));
+				.forEach(e -> taskManagerService.taskDelete(e.getTaskId()));
 	}
 
 	@Override
 	protected void defaultSort() {
-		tableRowObjects.sort((c1,c2) -> c2.getVm().getUpdateDate().compareTo(c1.getVm().getUpdateDate()));
+		tableRowObjects.sort((c1, c2) -> c2.getVm().getUpdateDate().compareTo(c1.getVm().getUpdateDate()));
 	}
 
 	@Override
@@ -82,7 +85,8 @@ public class TaskManagerTablePresenter
 		col2.setWidth(80);
 		col2.setPropertyFactory(TaskRow::selectedStatusProperty);
 		col2.setItemPropertyFactory(TaskRow::statusListPropery);
-		col2.setSortCondition((c1, c2) -> c1.getVm().getSelectedStatus().getValue().getStatusId().compareTo(c2.getVm().getSelectedStatus().getValue().getStatusId()));
+		col2.setSortCondition((c1, c2) -> c1.getVm().getSelectedStatus().getValue().getStatusId()
+				.compareTo(c2.getVm().getSelectedStatus().getValue().getStatusId()));
 
 		TextTableColumn<TaskRow> col3 = new TextTableColumn<>();
 		col3.setOrder(3);
@@ -99,7 +103,7 @@ public class TaskManagerTablePresenter
 		col4.setWidth(115);
 		col4.setPropertyFactory(TaskRow::limitDateProperty);
 		col4.setValidator(SDF_TIME_PAT);
-		col4.setSortCondition((c1,c2)-> c1.getVm().getLimitDate().compareTo(c2.getVm().getLimitDate()));
+		col4.setSortCondition((c1, c2) -> c1.getVm().getLimitDate().compareTo(c2.getVm().getLimitDate()));
 
 		TextTableColumn<TaskRow> col5 = new TextTableColumn<>();
 		col5.setOrder(5);
@@ -107,7 +111,7 @@ public class TaskManagerTablePresenter
 		col5.setEditable(false);
 		col5.setWidth(115);
 		col5.setPropertyFactory(TaskRow::startDateProperty);
-		col5.setSortCondition((c1,c2)-> c1.getVm().getStartDate().compareTo(c2.getVm().getStartDate()));
+		col5.setSortCondition((c1, c2) -> c1.getVm().getStartDate().compareTo(c2.getVm().getStartDate()));
 
 		TextTableColumn<TaskRow> col6 = new TextTableColumn<>();
 		col6.setOrder(6);
@@ -115,7 +119,7 @@ public class TaskManagerTablePresenter
 		col6.setEditable(false);
 		col6.setWidth(115);
 		col6.setPropertyFactory(TaskRow::updateDateProperty);
-		col6.setSortCondition((c1,c2)-> c1.getVm().getUpdateDate().compareTo(c2.getVm().getUpdateDate()));
+		col6.setSortCondition((c1, c2) -> c1.getVm().getUpdateDate().compareTo(c2.getVm().getUpdateDate()));
 
 		columns = Arrays.asList(col1, col2, col3, col4, col5, col6);
 
@@ -138,6 +142,7 @@ public class TaskManagerTablePresenter
 		return new TaskManagerTableRow();
 	}
 
+	@Override
 	protected List<TaskEntity> getEntity() {
 		return taskManagerService.taskGet(windowParam.getTaskGroupId());
 	}
@@ -145,7 +150,7 @@ public class TaskManagerTablePresenter
 	@Override
 	protected TaskManagerTableRowObject createRowObject(TaskEntity entity, TaskRow vm) {
 		TaskManagerTableRowObject rowObject = new TaskManagerTableRowObject(RowType.NORMAL, vm);
-		rowObject.setVisible(true);
+		excludeJudge(rowObject);
 		return rowObject;
 	}
 
@@ -159,6 +164,7 @@ public class TaskManagerTablePresenter
 		vm.setLimitDate(longToDateTime(entity.getLimitDate()));
 		vm.setStartDate(longToDateTime(entity.getStartDate()));
 		vm.setUpdateDate(longToDateTime(entity.getUpdateDate()));
+
 		return vm;
 	};
 
@@ -189,5 +195,42 @@ public class TaskManagerTablePresenter
 	public UtlLabelValueBean<TaskStatusEntity> getStatusBean(TaskEntity entity) {
 		TaskStatusEntity status = taskManagerService.getStatus(entity.getStatusId());
 		return new UtlLabelValueBean<TaskStatusEntity>(status.getStatus(), status);
+	}
+
+	void setVm(TaskManagerViewModel vm) {
+		this.screenVm = vm;
+		vm.notYetCbProperty().addListener(this::excludeChange);
+		vm.duringCbProperty().addListener(this::excludeChange);
+		vm.rvCbProperty().addListener(this::excludeChange);
+		vm.completeCbProperty().addListener(this::excludeChange);
+		vm.holdCbProperty().addListener(this::excludeChange);
+		vm.unCbProperty().addListener(this::excludeChange);
+
+	}
+
+	private void excludeChange(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+		tableRowObjects.parallelStream().forEach(this::excludeJudge);
+		redraw();
+	}
+
+	private void excludeJudge(TaskManagerTableRowObject rowObject) {
+		if ("1".equals(rowObject.getVm().getSelectedStatus().getValue().getStatusId())) {
+			rowObject.setVisible(screenVm.getNotYetCb());
+		}
+		if ("1".equals(rowObject.getVm().getSelectedStatus().getValue().getStatusId())) {
+			rowObject.setVisible(screenVm.getDuringCb());
+		}
+		if ("2".equals(rowObject.getVm().getSelectedStatus().getValue().getStatusId())) {
+			rowObject.setVisible(screenVm.getRvCb());
+		}
+		if ("3".equals(rowObject.getVm().getSelectedStatus().getValue().getStatusId())) {
+			rowObject.setVisible(screenVm.getCompleteCb());
+		}
+		if ("4".equals(rowObject.getVm().getSelectedStatus().getValue().getStatusId())) {
+			rowObject.setVisible(screenVm.getHoldCb());
+		}
+		if ("5".equals(rowObject.getVm().getSelectedStatus().getValue().getStatusId())) {
+			rowObject.setVisible(screenVm.getUnCb());
+		}
 	}
 }

@@ -16,11 +16,15 @@ public class RowAutoCreater {
 	public static void main(String[] args) {
 
 		//		actualWorkRow();
-//				actualWorkTaskRow();
+		//				actualWorkTaskRow();
 
 		//				taskRow();
 
 		//				awIndexVm();
+
+//		awTableVm();
+
+		//		tamsmgrTableVm();
 
 	}
 
@@ -93,6 +97,37 @@ public class RowAutoCreater {
 				.col(Col.builder().name("classifcation2RemoveCb").type("ActualWorkClassifcation2Entity")
 						.isCheeckBox(true)
 						.build())//
+				.build();
+
+		create(def);
+	}
+
+	private static void awTableVm() {
+		Def def = Def.builder()//
+				.packageName("chigirh.app.utility.app.screen.actualwork")//
+				.rowName("ActualWorkViewModel")
+				.pass("src/main/java/chigirh/app/utility/app/screen/actualwork")//
+				.keyType("String")//
+				.col(Col.builder().name("awAddTf").type("String").build())//
+				.build();
+
+		create(def);
+	}
+
+	private static void tamsmgrTableVm() {
+		Def def = Def.builder()//
+				.packageName("chigirh.app.utility.app.screen.taskmgr")//
+				.rowName("TaskManagerViewModel")
+				.pass("src/main/java/chigirh/app/utility/app/screen/taskmgr")//
+				.keyType("String")//
+				.col(Col.builder().name("notYetCb").type("Boolean").build())//
+				.col(Col.builder().name("duringCb").type("Boolean").build())//
+				.col(Col.builder().name("rvCb").type("Boolean").build())//
+				.col(Col.builder().name("completeCb").type("Boolean").build())//
+				.col(Col.builder().name("holdCb").type("Boolean").build())//
+				.col(Col.builder().name("unCb").type("Boolean").build())//
+				.col(Col.builder().name("addTf").type("String").build())//
+				.col(Col.builder().name("addLimitTf").type("String").build())//
 				.build();
 
 		create(def);

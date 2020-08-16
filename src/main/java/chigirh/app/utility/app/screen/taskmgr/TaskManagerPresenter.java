@@ -11,12 +11,14 @@ import org.springframework.stereotype.Component;
 import chigirh.app.utility.app.domain.taskmgr.TaskGroupEntity;
 import chigirh.app.utility.app.domain.taskmgr.TaskManagerService;
 import chigirh.app.utility.common.prop.FxmlProperties;
+import chigirh.app.utility.javafx.component.UtlTextField;
 import chigirh.app.utility.javafx.presenter.PresenterBase;
+import chigirh.app.utility.javafx.util.JavaFxBindingUtils;
 import chigirh.app.utility.javafx.window.ContentViewAndPresenter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.CheckBox;
 import javafx.scene.layout.AnchorPane;
 import lombok.RequiredArgsConstructor;
 
@@ -25,14 +27,34 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TaskManagerPresenter extends PresenterBase {
 
+	private TaskManagerViewModel vm = new TaskManagerViewModel();
+
 	@FXML
 	private AnchorPane tableArea;
 
 	@FXML
-	private TextField addTf;
+	private CheckBox notYetCb;
 
 	@FXML
-	private TextField addLimitTf;
+	private CheckBox duringCb;
+
+	@FXML
+	private CheckBox rvCb;
+
+	@FXML
+	private CheckBox completeCb;
+
+	@FXML
+	private CheckBox holdCb;
+
+	@FXML
+	private CheckBox unCb;
+
+	@FXML
+	private UtlTextField addTf;
+
+	@FXML
+	private UtlTextField addLimitTf;
 
 	@FXML
 	private Button addBt;
@@ -48,7 +70,6 @@ public class TaskManagerPresenter extends PresenterBase {
 
 	private TaskGroupEntity windowParam = null;
 
-
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
@@ -57,6 +78,16 @@ public class TaskManagerPresenter extends PresenterBase {
 		ContentViewAndPresenter<TaskManagerTablePresenter> vp = loadContent(tableFxml);
 		taskManagerTablePresenter = vp.getPresenter();
 		tableArea.getChildren().add(vp.getView());
+
+		JavaFxBindingUtils.bindingNode(notYetCb, vm.notYetCbProperty());
+		JavaFxBindingUtils.bindingNode(duringCb, vm.duringCbProperty());
+		JavaFxBindingUtils.bindingNode(rvCb, vm.rvCbProperty());
+		JavaFxBindingUtils.bindingNode(completeCb, vm.completeCbProperty());
+		JavaFxBindingUtils.bindingNode(holdCb, vm.holdCbProperty());
+		JavaFxBindingUtils.bindingNode(unCb, vm.unCbProperty());
+
+		JavaFxBindingUtils.bindingNode(addTf, vm.addTfProperty());
+		JavaFxBindingUtils.bindingNode(addLimitTf, vm.addLimitTfProperty());
 	}
 
 	@Override
@@ -64,6 +95,7 @@ public class TaskManagerPresenter extends PresenterBase {
 		if (windowParam instanceof TaskGroupEntity) {
 			this.windowParam = (TaskGroupEntity) windowParam;
 			taskManagerTablePresenter.setPatameter(windowParam);
+			taskManagerTablePresenter.setVm(vm);
 		}
 	}
 
@@ -72,19 +104,18 @@ public class TaskManagerPresenter extends PresenterBase {
 		super.onStart();
 	}
 
-
 	@FXML
-	public void onAwAdd(ActionEvent e) throws ParseException{
-		taskManagerService.taskAdd(windowParam.getTaskGroupId(),addTf.getText(), addLimitTf.getText());
+	public void onAwAdd(ActionEvent e) throws ParseException {
+		taskManagerService.taskAdd(windowParam.getTaskGroupId(), vm.getAddTf(), vm.getAddLimitTf());
 		taskManagerTablePresenter.update();
 
-		addTf.setText("");
-		addLimitTf.setText("");
+		vm.setAddTf("");
+		vm.setAddLimitTf("");
 
 	}
 
 	@FXML
-	public void onAwDelete(ActionEvent e) throws ParseException{
+	public void onAwDelete(ActionEvent e) throws ParseException {
 		taskManagerTablePresenter.delete();
 		taskManagerTablePresenter.update();
 	}
