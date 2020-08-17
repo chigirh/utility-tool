@@ -49,7 +49,7 @@ public class TaskManagerService {
 
 	public void taskGroupDelete(final String taskGroupId) {
 		taskGroupMapper.deleteById(taskGroupId);
-		taskGet(taskGroupId).parallelStream().map(TaskEntity::getTaskId).forEach(this::taskDelete);
+		taskGet(taskGroupId).stream().map(TaskEntity::getTaskId).forEach(this::taskDelete);
 	}
 
 	public List<TaskEntity> taskGet(final String taskGroupId) {

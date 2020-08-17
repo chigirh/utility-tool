@@ -100,13 +100,13 @@ public class ActualWorkService {
 	@Transactional
 	public void awGroupDelete(final String awGroupId) {
 		actualWorkGroupMapper.deleteById(awGroupId);
-		awGet(awGroupId).parallelStream().map(ActualWorkEntity::getAwId).forEach(this::awDelete);
+		awGet(awGroupId).stream().map(ActualWorkEntity::getAwId).forEach(this::awDelete);
 	}
 
 	@Transactional
 	public void awDelete(final String awId) {
 		actualWorkMapper.deleteById(awId);
-		awTaskGet(awId).parallelStream().forEach(e -> awTaskDelete(e.getAwId(), e.getSerial()));
+		awTaskGet(awId).stream().forEach(e -> awTaskDelete(e.getAwId(), e.getSerial()));
 	}
 
 	@Transactional
