@@ -404,4 +404,9 @@ public class ActualWorkTablePresenter
 		return entity == null ? null : new UtlLabelValueBean<>(entity.getName(), entity);
 	}
 
+	@Override
+	public void relink() {
+
+	}
+
 }
