@@ -6,6 +6,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.control.Control;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 
@@ -41,6 +42,10 @@ public abstract class TableCell<E extends Control, P extends ReadOnlyProperty<?>
 			final EventType<T> eventType,
 			final EventHandler<? super T> eventHandler) {
 		cell.addEventFilter(eventType, eventHandler);
+	}
+
+	public void setTooltip(Tooltip tooltip) {
+		Tooltip.install(cell, tooltip);
 	}
 
 }

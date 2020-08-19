@@ -8,15 +8,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import chigirh.app.utility.app.screen.index.actualwork.ActualWorkIndexPresenter;
+import chigirh.app.utility.app.screen.index.shortcut.ShortcutIndexPresenter;
 import chigirh.app.utility.app.screen.index.taskmgr.TaskManagerIndexPresenter;
 import chigirh.app.utility.common.prop.FxmlProperties;
 import chigirh.app.utility.javafx.presenter.PresenterBase;
 import chigirh.app.utility.javafx.window.ContentViewAndPresenter;
 import javafx.fxml.FXML;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.VBox;
 import lombok.RequiredArgsConstructor;
 
 @Scope(BeanDefinition.SCOPE_PROTOTYPE)
@@ -27,15 +25,11 @@ public class RootIndexPresenter extends PresenterBase {
 	@FXML
 	private Tab operationTab;
 
-
 	@FXML
 	private Tab taskmgrTab;
 
 	@FXML
-	private ScrollPane shortcutScroll;
-
-	@FXML
-	private VBox shortcutBox;
+	private Tab scTab;
 
 	final FxmlProperties fxmlProperties;
 
@@ -43,9 +37,11 @@ public class RootIndexPresenter extends PresenterBase {
 
 	private TaskManagerIndexPresenter taskManagerIndexPresenter;
 
+	private ShortcutIndexPresenter shortcutIndexPresenter;
+
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		shortcutScroll.setHbarPolicy(ScrollBarPolicy.NEVER);
 
 		String operationIndexFxml = fxmlProperties.getActualWorkIndex();
 		ContentViewAndPresenter<ActualWorkIndexPresenter> operationVP = loadContent(operationIndexFxml);
@@ -56,6 +52,11 @@ public class RootIndexPresenter extends PresenterBase {
 		ContentViewAndPresenter<TaskManagerIndexPresenter> taskmgrVP = loadContent(taskmgrIndexFxml);
 		taskManagerIndexPresenter = taskmgrVP.getPresenter();
 		taskmgrTab.setContent(taskmgrVP.getView());
+
+		String scIndexFxml = fxmlProperties.getShortcutIndex();
+		ContentViewAndPresenter<ShortcutIndexPresenter> scVP = loadContent(scIndexFxml);
+		shortcutIndexPresenter = scVP.getPresenter();
+		scTab.setContent(scVP.getView());
 
 	}
 }

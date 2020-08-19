@@ -132,7 +132,16 @@ public abstract class TablePresenterBase<E, V extends SimpleTableRow<?>, R exten
 	protected TableCell<?, ?> createCell(TableColumn<V, ?, ?> column, E entity,
 			V vm) {
 		TableCell<?, ?> cell = column.cellCreate(vm);
+		cell.change(() -> rowUpdate(vm));
+		cellSettings(cell, column, entity, vm);
 		return cell;
+	}
+
+	protected void rowUpdate(V vm) {
+	}
+
+	protected void cellSettings(TableCell<?, ?> cell,TableColumn<V, ?, ?> column, E entity,
+			V vm) {
 	}
 
 	public void relink() {

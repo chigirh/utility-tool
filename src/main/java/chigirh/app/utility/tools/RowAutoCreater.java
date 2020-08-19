@@ -26,6 +26,10 @@ public class RowAutoCreater {
 
 		//		tamsmgrTableVm();
 
+//		scRow();
+//		scIndexVm();
+//		scTableVm();
+
 	}
 
 	private static void actualWorkRow() {
@@ -76,6 +80,46 @@ public class RowAutoCreater {
 				.col(Col.builder().name("startDate").type("String").build())//
 				.col(Col.builder().name("updateDate").type("String").build())//
 				.col(Col.builder().name("isDeleteChecked").type("Boolean").build())//
+				.build();
+
+		create(def);
+	}
+
+	private static void scRow() {
+		Def def = Def.builder()//
+				.packageName("chigirh.app.utility.app.screen.shortcut")//
+				.rowName("Shortcut")
+				.pass("src/main/java/chigirh/app/utility/app/screen/shortcut")//
+				.keyType("String")//
+				.key(Col.builder().name("scId").type("String").build())//
+				.col(Col.builder().name("scTitle").type("String").build())//
+				.col(Col.builder().name("scPath").type("String").build())//
+				.col(Col.builder().name("isDeleteChecked").type("Boolean").build())//
+				.build();
+
+		create(def);
+	}
+
+	private static void scTableVm() {
+		Def def = Def.builder()//
+				.packageName("chigirh.app.utility.app.screen.shortcut")//
+				.rowName("ShortcutTableViewModel")
+				.pass("src/main/java/chigirh/app/utility/app/screen/shortcut")//
+				.keyType("String")//
+				.col(Col.builder().name("scTitleAddTf").type("String").build())//
+				.col(Col.builder().name("scPathAddTf").type("String").build())//
+				.build();
+
+		create(def);
+	}
+
+	private static void scIndexVm() {
+		Def def = Def.builder()//
+				.packageName("chigirh.app.utility.app.screen.index.shortcut")//
+				.rowName("ShortcutViewModel")
+				.pass("src/main/java/chigirh/app/utility/app/screen/index/shortcut")//
+				.keyType("String")//
+				.col(Col.builder().name("scAddTf").type("String").build())//
 				.build();
 
 		create(def);
