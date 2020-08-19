@@ -15,15 +15,12 @@ import chigirh.app.utility.app.domain.taskmgr.TaskStatusEntity;
 import chigirh.app.utility.javafx.component.UtlLabelValueBean;
 import chigirh.app.utility.javafx.component.table.CheckTableColumn;
 import chigirh.app.utility.javafx.component.table.ChoiceTableColumn;
-import chigirh.app.utility.javafx.component.table.TableCell;
-import chigirh.app.utility.javafx.component.table.TableColumn;
 import chigirh.app.utility.javafx.component.table.TableRow.RowType;
 import chigirh.app.utility.javafx.component.table.TextTableColumn;
 import chigirh.app.utility.javafx.component.taskmgr.TaskManagerTableRow;
 import chigirh.app.utility.javafx.component.taskmgr.TaskManagerTableRowObject;
 import chigirh.app.utility.javafx.presenter.TablePresenterBase;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import lombok.RequiredArgsConstructor;
@@ -70,13 +67,11 @@ public class TaskManagerTablePresenter
 	@Override
 	protected void clumnDefinition() {
 
-		new ChoiceBox<TaskEntity>();
-
 		CheckTableColumn<TaskRow> col1 = new CheckTableColumn<>();
 		col1.setOrder(1);
 		col1.setColumnName("");
 		col1.setEditable(true);
-		col1.setWidth(20);
+		col1.setWidth(25);
 		col1.setPropertyFactory(TaskRow::isDeleteCheckedProperty);
 
 		ChoiceTableColumn<TaskRow, TaskStatusEntity> col2 = new ChoiceTableColumn<>();
@@ -178,14 +173,7 @@ public class TaskManagerTablePresenter
 	}
 
 	@Override
-	protected TableCell<?, ?> createCell(TableColumn<TaskRow, ?, ?> column, TaskEntity entity,
-			TaskRow vm) {
-		TableCell<?, ?> cell = column.cellCreate(vm);
-		cell.change(() -> update(vm));
-		return cell;
-	}
-
-	private void update(TaskRow vm) {
+	protected void rowUpdate(TaskRow vm) {
 		TaskEntity updateEntity = taskManagerService.taskUpdate(vm.getKey(), windowParam.getTaskGroupId(),
 				vm.getTaskName(), vm.getLimitDate(),
 				vm.getSelectedStatus().getValue().getStatusId());

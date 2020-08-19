@@ -26,4 +26,8 @@ public class FxmlProperties {
 
 	private String taskManagerTable;
 
+	private String shortcut;
+
+	private String shortcutTable;
+
 }

@@ -10,17 +10,7 @@
   <tabs>
     <Tab fx:id="operationTab" text="稼働" />
     <Tab fx:id="taskmgrTab" text="タスク" />
-    <Tab text="ショートカット">
-      <content>
-        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
-                  <ScrollPane fx:id="shortcutScroll" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <content>
-                        <VBox fx:id="shortcutBox" prefWidth="600.0" />
-                     </content>
-                  </ScrollPane>
-               </children></AnchorPane>
-      </content>
+    <Tab fx:id="scTab" text="ショートカット">
     </Tab>
   </tabs>
 

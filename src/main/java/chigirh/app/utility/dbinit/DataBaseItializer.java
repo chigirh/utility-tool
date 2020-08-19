@@ -141,7 +141,7 @@ public class DataBaseItializer {
 
 		CreateTableSQL task = CreateTableSQL.CREATE_TABLE().tableName("t_task")//
 				.column(Col.builder().index(1).name("task_id").type(String.class).isPk(true).build())//
-				.column(Col.builder().index(2).name("task_group_id").type(String.class).isPk(true).build())//
+				.column(Col.builder().index(2).name("task_group_id").type(String.class).build())//
 				.column(Col.builder().index(3).name("task_name").type(String.class).build())//
 				.column(Col.builder().index(4).name("start_date").type(Integer.class).isNotNull(true).build())//
 				.column(Col.builder().index(5).name("update_date").type(Integer.class).isNotNull(true).build())//
@@ -181,6 +181,29 @@ public class DataBaseItializer {
 		taskStatusEntity.setStatusId("5");
 		taskStatusEntity.setStatus("欠番");
 		taskStatusMapper.saveAndFlush(taskStatusEntity);
+
+		CreateTableSQL scGroup = CreateTableSQL.CREATE_TABLE().tableName("t_sc_group")//
+				.column(Col.builder().index(1).name("sc_group_id").type(String.class).isPk(true).build())//
+				.column(Col.builder().index(2).name("sc_group_name").type(String.class).build())//
+				.column(Col.builder().index(3).name("remark").type(String.class).build())//
+				.build();
+		LOGGER.info("table name {}", scGroup.getTableName());
+		isCreate = issuer.createTable(scGroup);
+
+		CreateTableSQL sc = CreateTableSQL.CREATE_TABLE().tableName("t_sc")//
+				.column(Col.builder().index(1).name("sc_id").type(String.class).isPk(true).build())//
+				.column(Col.builder().index(2).name("sc_group_id").type(String.class).isNotNull(true).build())//
+				.column(Col.builder().index(2).name("sc_title").type(String.class).build())//
+				.column(Col.builder().index(2).name("sc_path").type(String.class).build())//
+				.column(Col.builder().index(3).name("remark").type(String.class).build())//
+				.fk(Fk.builder().col("sc_group_id").refTab("t_sc_group").refCol("sc_group_id").setNull(true)
+						.build())//
+				.build();
+		LOGGER.info("table name {}", sc.getTableName());
+		isCreate = issuer.createTable(sc);
+
+
+		LOGGER.info("result:{}", isCreate ? "SUCCESS!!" : "EXEITS");
 
 		LOGGER.info("Transaction table Initialize end ...");
 
