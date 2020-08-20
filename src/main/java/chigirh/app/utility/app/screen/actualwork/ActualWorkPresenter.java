@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import chigirh.app.utility.app.domain.actualwork.ActualWorkEntity;
+import chigirh.app.utility.app.domain.actualwork.ActualWorkExportService;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkGroupEntity;
 import chigirh.app.utility.app.domain.actualwork.ActualWorkService;
 import chigirh.app.utility.common.prop.FxmlProperties;
@@ -44,14 +45,19 @@ public class ActualWorkPresenter extends PresenterBase {
 	@FXML
 	private Button awDeleteBt;
 
+	@FXML
+	private Button awOutputBt;
+
 	final FxmlProperties fxmlProperties;
 
 	final ActualWorkService actualWorkService;
 
+
+	final ActualWorkExportService actualWorkExportService;
+
 	private ActualWorkGroupEntity windowParam;
 
 	private ActualWorkTablePresenter actualWorkTablePresenter;
-
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
@@ -67,9 +73,9 @@ public class ActualWorkPresenter extends PresenterBase {
 		JavaFxBindingUtils.bindingNode(awAddTf, vm.awAddTfProperty());
 	}
 
-	public  void setPatameter(Object windowParam) {
-		if(windowParam instanceof ActualWorkGroupEntity) {
-			this.windowParam = (ActualWorkGroupEntity)windowParam;
+	public void setPatameter(Object windowParam) {
+		if (windowParam instanceof ActualWorkGroupEntity) {
+			this.windowParam = (ActualWorkGroupEntity) windowParam;
 			actualWorkTablePresenter.setPatameter(windowParam);
 		}
 	}
@@ -80,15 +86,14 @@ public class ActualWorkPresenter extends PresenterBase {
 		actualWorkTablePresenter.update();
 	}
 
-
 	@FXML
-	public void onAwAdd(ActionEvent e) throws ParseException{
-		if(!JavaFxTextFieldUtils.inputCheck(awAddTf, AW_DATE_PAT)) {
+	public void onAwAdd(ActionEvent e) throws ParseException {
+		if (!JavaFxTextFieldUtils.inputCheck(awAddTf, AW_DATE_PAT)) {
 			return;
 		}
 
-		ActualWorkEntity entity = actualWorkService.awAdd(windowParam.getAwGroupId(),vm.getAwAddTf(),null);
-		if(entity == null) {
+		ActualWorkEntity entity = actualWorkService.awAdd(windowParam.getAwGroupId(), vm.getAwAddTf(), null);
+		if (entity == null) {
 			return;
 		}
 
@@ -98,8 +103,13 @@ public class ActualWorkPresenter extends PresenterBase {
 	}
 
 	@FXML
-	public void onAwDelete(ActionEvent e) throws ParseException{
+	public void onAwDelete(ActionEvent e) {
 		actualWorkTablePresenter.delete();
+	}
+
+	@FXML
+	public void onAwOutput(ActionEvent e) {
+		actualWorkExportService.export(windowParam.getAwGroupId());
 	}
 
 }

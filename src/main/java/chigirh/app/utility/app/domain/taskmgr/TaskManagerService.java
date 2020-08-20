@@ -8,6 +8,8 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import javax.transaction.Transactional;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -36,10 +38,12 @@ public class TaskManagerService {
 
 	final TaskMapper taskMapper;
 
+	@Transactional
 	public List<TaskGroupEntity> taskGroupGet() {
 		return taskGroupMapper.findAll();
 	}
 
+	@Transactional
 	public TaskGroupEntity taskGroupAdd(String taskGroupName) {
 		TaskGroupEntity entity = new TaskGroupEntity();
 		entity.setTaskGroupId(UUID.randomUUID().toString());
@@ -47,16 +51,19 @@ public class TaskManagerService {
 		return taskGroupMapper.saveAndFlush(entity);
 	}
 
+	@Transactional
 	public void taskGroupDelete(final String taskGroupId) {
 		taskGroupMapper.deleteById(taskGroupId);
 		taskGet(taskGroupId).stream().map(TaskEntity::getTaskId).forEach(this::taskDelete);
 	}
 
+	@Transactional
 	public List<TaskEntity> taskGet(final String taskGroupId) {
 		return taskMapper.findByTaskGroupIdEquals(taskGroupId);
 
 	}
 
+	@Transactional
 	public TaskEntity taskAdd(final String taskGroupId, String taskName, String limitDate) {
 		TaskEntity entity = new TaskEntity();
 		entity.setTaskId(UUID.randomUUID().toString());
@@ -85,6 +92,7 @@ public class TaskManagerService {
 
 	}
 
+	@Transactional
 	public TaskEntity taskUpdate(final String taskId, final String taskGroupId, String taskName, String limitDate,
 			String statusId) {
 		TaskEntity entity = new TaskEntity();
@@ -110,15 +118,18 @@ public class TaskManagerService {
 
 	}
 
+	@Transactional
 	public void taskDelete(final String taskId) {
 		taskMapper.deleteById(taskId);
 
 	}
 
+	@Transactional
 	public List<TaskStatusEntity> getStatus() {
 		return taskStatusMapper.findAll();
 	}
 
+	@Transactional
 	public TaskStatusEntity getStatus(final String statusId) {
 		Optional<TaskStatusEntity> opt = taskStatusMapper.findById(statusId);
 		if (opt.isPresent()) {

@@ -21,6 +21,8 @@
                         <Button fx:id="awAddBt" mnemonicParsing="false" onAction="#onAwAdd" prefHeight="23.0" prefWidth="90.0" text="新規追加" />
                         <AnchorPane prefWidth="10.0" />
                         <Button fx:id="awDeleteBt" mnemonicParsing="false" onAction="#onAwDelete" prefHeight="23.0" prefWidth="90.0" text="削除" />
+                        <AnchorPane prefWidth="10.0" />
+                        <Button fx:id="awOutputBt" mnemonicParsing="false" onAction="#onAwOutput" prefHeight="23.0" prefWidth="90.0" text="集計出力" />
                      </children>
                   </HBox>
                </children>
