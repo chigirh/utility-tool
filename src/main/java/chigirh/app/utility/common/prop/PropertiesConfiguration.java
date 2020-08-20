@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource({"classpath:fxml.properties","classpath:data.properties","classpath:css.properties"})
+@PropertySource({"classpath:fxml.properties","classpath:data.properties","classpath:css.properties","actual-work.properties"})
 public class PropertiesConfiguration {
 
 
@@ -23,6 +23,11 @@ public class PropertiesConfiguration {
 	@Bean
 	public DataProperties dataProperties() {
 		return new DataProperties();
+	}
+
+	@Bean
+	public ActualWorkProperties actualWorkProperties() {
+		return new ActualWorkProperties();
 	}
 
 }

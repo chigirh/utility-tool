@@ -3,6 +3,7 @@ package chigirh.app.utility.app.domain.actualwork;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.UUID;
 
@@ -30,6 +31,11 @@ public class ActualWorkService {
 	@Transactional
 	public List<ActualWorkGroupEntity> awGroupGet() {
 		return actualWorkGroupMapper.findAll();
+	}
+
+	@Transactional
+	public Optional<ActualWorkGroupEntity> awGroupGet(final String awGroupId) {
+		return actualWorkGroupMapper.findById(awGroupId);
 	}
 
 	@Transactional
