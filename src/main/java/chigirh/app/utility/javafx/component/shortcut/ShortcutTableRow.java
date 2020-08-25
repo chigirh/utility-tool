@@ -43,12 +43,18 @@ public class ShortcutTableRow extends TableRow<ShortcutTableRowObject> {
 
 		Pattern pattern = Pattern.compile("^http");
 
-		String c = pattern.matcher(vm.getScPath()).find()?"start":"EXPLORER";
+		Runtime runtime = Runtime.getRuntime();;
+		String[] command;
+		if (pattern.matcher(vm.getScPath()).find()) {
+			String[] c = { "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe", vm.getScPath() };
+			command = c;
+		} else {
+			String[] c = { "EXPLORER", vm.getScPath() };
+			command = c;
+		}
 
-		String[] Command = { c, vm.getScPath() };
-		Runtime runtime = Runtime.getRuntime();
 		try {
-			runtime.exec(Command);
+			runtime.exec(command);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
