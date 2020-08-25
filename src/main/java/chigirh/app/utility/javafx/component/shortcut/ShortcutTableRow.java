@@ -1,6 +1,7 @@
 package chigirh.app.utility.javafx.component.shortcut;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import chigirh.app.utility.app.screen.shortcut.ShortcutRow;
 import chigirh.app.utility.javafx.component.table.TableRow;
@@ -39,7 +40,12 @@ public class ShortcutTableRow extends TableRow<ShortcutTableRowObject> {
 	}
 
 	private void open(ActionEvent event, ShortcutRow vm) {
-		String[] Command = { "EXPLORER", vm.getScPath() };
+
+		Pattern pattern = Pattern.compile("^http");
+
+		String c = pattern.matcher(vm.getScPath()).find()?"start":"EXPLORER";
+
+		String[] Command = { c, vm.getScPath() };
 		Runtime runtime = Runtime.getRuntime();
 		try {
 			runtime.exec(Command);

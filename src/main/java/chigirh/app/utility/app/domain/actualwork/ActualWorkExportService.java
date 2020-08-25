@@ -78,6 +78,14 @@ public class ActualWorkExportService {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		String[] Command = { "EXPLORER", actualWorkProperties.getOutput() };
+		Runtime runtime = Runtime.getRuntime();
+		try {
+			runtime.exec(Command);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private String groupByKey(ActualWorkTaskEntity entity) {
